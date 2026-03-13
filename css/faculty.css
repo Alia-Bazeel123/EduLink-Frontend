@@ -288,14 +288,18 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 @media (max-width: 600px)  { .admin-stats-grid { grid-template-columns: 1fr; } }
 
 /* ==========================================
-   UTILITY CLASSES
+   UTILITY CLASSES (replaces inline styles)
 ========================================== */
 .mb-18  { margin-bottom: 18px; }
 .mb-0   { margin-bottom: 0; }
 .flex-1 { flex: 1; }
 .overflow-x-auto { overflow-x: auto; }
+
+/* Marks table cell helpers */
 .cell-mono   { font-family: 'Space Mono', monospace; font-size: 11.5px; color: var(--text-soft); }
 .cell-bold   { font-weight: 500; }
 .remarks-input { font-size: 12px; padding: 6px 10px; }
+
+/* Filter bar with form-group flex children */
 .filter-bar-group { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
 .filter-bar-group .form-group { flex: 1; }
