@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduLink – Creating Links That Matter</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="landing-page">
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Navigation -->
+  <nav class="nav-bar glass-nav">
+    <div class="nav-logo">
+      <div class="logo-mark">
+        <svg width="40" height="40" viewBox="0 0 40 40">
+          <defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#23314f"/><stop offset="100%" style="stop-color:#3d5080"/></linearGradient></defs>
+          <rect width="40" height="40" rx="10" fill="url(#lg)"/>
+          <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="white"/>
+          <line x1="20" y1="8" x2="20" y2="14" stroke="white" stroke-width="2"/>
+          <line x1="32" y1="20" x2="26" y2="20" stroke="white" stroke-width="2"/>
+          <line x1="20" y1="32" x2="20" y2="26" stroke="white" stroke-width="2"/>
+          <line x1="8" y1="20" x2="14" y2="20" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-main">EduLink</span>
+        <span class="logo-tag">RAK Campus</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-primary" onclick="showLoginModal()">
+        <i data-lucide="log-in" width="15" height="15"></i> Sign In
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge animate-in">
+        <span class="badge-dot"></span>
+        <span>Now live — Spring 2025</span>
+      </div>
+      <h1 class="hero-title animate-in delay-1">
+        <span class="title-line">Creating Links</span>
+        <span class="title-line accent-line">That Matter.</span>
+      </h1>
+      <p class="hero-sub animate-in delay-2">
+        EduLink is your centralized campus hub — bringing students, faculty, and parents together through seamless academic management, real-time updates, and smart document handling.
+      </p>
+      <div class="hero-cta animate-in delay-3">
+        <button class="btn-hero-primary" onclick="showLoginModal()">
+          <i data-lucide="log-in" width="18" height="18"></i>
+          <span>Sign In to EduLink</span>
+        </button>
+        <button class="btn-hero-ghost" onclick="scrollToFeatures()">
+          Explore Features
+          <i data-lucide="chevron-down" width="16" height="16"></i>
+        </button>
+      </div>
+      <div class="hero-stats animate-in delay-4">
+        <div class="stat-item">
+          <span class="stat-num" data-target="2400">0</span>
+          <span class="stat-label">Students</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" data-target="180">0</span>
+          <span class="stat-label">Faculty</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" data-target="48">0</span>
+          <span class="stat-label">Programs</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Features -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <div class="section-eyebrow">Platform Features</div>
+      <h2 class="section-title">Everything campus life needs</h2>
+      <p class="section-desc">One platform. Every connection.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card feature-card-large">
+        <div class="feature-icon-wrap"><i data-lucide="calendar-check" width="26" height="26"></i></div>
+        <h3>Smart Attendance</h3>
+        <p>Real-time tracking with visual dashboards, subject-wise breakdown, and automatic alerts when below threshold.</p>
+        <div class="feature-visual attendance-visual">
+          <div class="att-bar-group">
+            <div class="att-bar" style="height:70%"><span>Mon</span></div>
+            <div class="att-bar" style="height:100%"><span>Tue</span></div>
+            <div class="att-bar absent" style="height:8px"><span>Wed</span></div>
+            <div class="att-bar" style="height:100%"><span>Thu</span></div>
+            <div class="att-bar" style="height:70%"><span>Fri</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap"><i data-lucide="folder-open" width="26" height="26"></i></div>
+        <h3>Document Vault</h3>
+        <p>Upload and manage academic documents with automated expiry reminders and compliance tracking.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap"><i data-lucide="bar-chart-2" width="26" height="26"></i></div>
+        <h3>Live Marksheets</h3>
+        <p>Instant access to grades, GPA calculations, and semester results the moment faculty publishes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap"><i data-lucide="megaphone" width="26" height="26"></i></div>
+        <h3>Announcements</h3>
+        <p>Official campus-wide and department-specific announcements from administration and faculty.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap"><i data-lucide="users" width="26" height="26"></i></div>
+        <h3>Parent Visibility</h3>
+        <p>Parents stay connected with their child's academic journey — grades, attendance, and updates. <span class="coming-soon-tag">Coming Soon</span></p>
+      </div>
+      <div class="feature-card feature-card-large">
+        <div class="feature-icon-wrap"><i data-lucide="shield" width="26" height="26"></i></div>
+        <h3>Admin Control Center</h3>
+        <p>Complete oversight of student records, document compliance, campus announcements, and system-wide configuration from one secure panel.</p>
+        <button class="btn-feature" onclick="showLoginModal()">Sign In <i data-lucide="arrow-right" width="14" height="14"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-text">
+        <div class="section-eyebrow">About EduLink</div>
+        <h2>The campus platform<br>built for <em>real</em> connections</h2>
+        <p>EduLink was designed from the ground up for modern university life — eliminating silos between students, faculty, and administration through one beautifully designed, secure platform.</p>
+        <p>From seamless document management to live academic dashboards, EduLink ensures every stakeholder has exactly what they need, when they need it.</p>
+        <div class="about-badges">
+          <div class="about-badge"><i data-lucide="lock" width="13" height="13"></i> Secure &amp; Compliant</div>
+          <div class="about-badge"><i data-lucide="smartphone" width="13" height="13"></i> Mobile Ready</div>
+          <div class="about-badge"><i data-lucide="zap" width="13" height="13"></i> Real-time Updates</div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-ring">
+          <div class="ring ring-1"></div>
+          <div class="ring ring-2"></div>
+          <div class="ring ring-3"></div>
+          <div class="ring-center">
+            <svg width="60" height="60" viewBox="0 0 40 40">
+              <rect width="40" height="40" rx="10" fill="#23314f"/>
+              <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+              <circle cx="20" cy="20" r="4" fill="white"/>
+              <line x1="20" y1="8" x2="20" y2="14" stroke="white" stroke-width="2"/>
+              <line x1="32" y1="20" x2="26" y2="20" stroke="white" stroke-width="2"/>
+              <line x1="20" y1="32" x2="20" y2="26" stroke="white" stroke-width="2"/>
+              <line x1="8" y1="20" x2="14" y2="20" stroke="white" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="orbit-dot orbit-dot-1"><i data-lucide="graduation-cap" width="18" height="18" color="white"></i></div>
+          <div class="orbit-dot orbit-dot-2"><i data-lucide="book-open" width="18" height="18" color="white"></i></div>
+          <div class="orbit-dot orbit-dot-3"><i data-lucide="users" width="18" height="18" color="white"></i></div>
+          <div class="orbit-dot orbit-dot-4"><i data-lucide="building-2" width="18" height="18" color="white"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+      <div class="section-header">
+        <div class="section-eyebrow">Get In Touch</div>
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-desc">Have a question or need support? Reach out and we'll get back to you.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i data-lucide="map-pin" width="20" height="20"></i></div>
+            <div>
+              <div class="contact-info-label">Address</div>
+              <div class="contact-info-val">RAK University of Applied Sciences<br>Ras Al Khaimah, UAE</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i data-lucide="mail" width="20" height="20"></i></div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-val">support@edulinkrak.ac.ae</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i data-lucide="phone" width="20" height="20"></i></div>
+            <div>
+              <div class="contact-info-label">Phone</div>
+              <div class="contact-info-val">+971 7 123 4567</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i data-lucide="clock" width="20" height="20"></i></div>
+            <div>
+              <div class="contact-info-label">Office Hours</div>
+              <div class="contact-info-val">Sunday – Thursday, 8:00 AM – 5:00 PM</div>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" onsubmit="handleContactForm(event)">
+          <div class="form-row">
+            <div class="form-group"><label>Your Name</label><input type="text" class="form-input" placeholder="Ahmed Al Mansouri" required/></div>
+            <div class="form-group"><label>Email Address</label><input type="email" class="form-input" placeholder="you@example.com" required/></div>
+          </div>
+          <div class="form-group"><label>Subject</label><input type="text" class="form-input" placeholder="e.g. Portal access issue"/></div>
+          <div class="form-group"><label>Message</label><textarea class="form-input contact-textarea" placeholder="Write your message here..." required></textarea></div>
+          <button type="submit" class="btn-hero-primary" style="width:100%;justify-content:center">
+            <i data-lucide="send" width="17" height="17"></i>
+            <span>Send Message</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <svg width="32" height="32" viewBox="0 0 40 40">
+          <rect width="40" height="40" rx="10" fill="#23314f"/>
+          <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="white"/>
+          <line x1="20" y1="8" x2="20" y2="14" stroke="white" stroke-width="2"/>
+          <line x1="32" y1="20" x2="26" y2="20" stroke="white" stroke-width="2"/>
+          <line x1="20" y1="32" x2="20" y2="26" stroke="white" stroke-width="2"/>
+          <line x1="8" y1="20" x2="14" y2="20" stroke="white" stroke-width="2"/>
+        </svg>
+        <div>
+          <div class="footer-logo-text">EduLink</div>
+          <div class="footer-tagline">Creating links that matter</div>
+        </div>
+      </div>
+      <div class="footer-copy">© 2025 EduLink · RAK Campus · All rights reserved</div>
+    </div>
+  </footer>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="login-modal" style="display:none">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeLoginModal()"><i data-lucide="x" width="16" height="16"></i></button>
+      <div class="modal-logo">
+        <svg width="48" height="48" viewBox="0 0 40 40">
+          <rect width="40" height="40" rx="10" fill="#23314f"/>
+          <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="white"/>
+          <line x1="20" y1="8" x2="20" y2="14" stroke="white" stroke-width="2"/>
+          <line x1="32" y1="20" x2="26" y2="20" stroke="white" stroke-width="2"/>
+          <line x1="20" y1="32" x2="20" y2="26" stroke="white" stroke-width="2"/>
+          <line x1="8" y1="20" x2="14" y2="20" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <h2 class="modal-title">Sign In to EduLink</h2>
+      <div class="modal-tabs">
+        <button class="tab-btn active" id="tab-student" onclick="switchTab('student')">Student</button>
+        <button class="tab-btn" id="tab-faculty" onclick="switchTab('faculty')">Faculty</button>
+        <button class="tab-btn" id="tab-admin" onclick="switchTab('admin')">Admin</button>
+        <button class="tab-btn" id="tab-parent" onclick="switchTab('parent')">Parent</button>
+      </div>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Email / ID</label>
+          <input type="text" id="login-email" placeholder="e.g. student@demo.com" class="form-input"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" class="form-input"/>
+        </div>
+        <div class="form-options">
+          <label class="checkbox-wrap"><input type="checkbox"> Remember me</label>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+        <button class="btn-login" onclick="handleLogin()">Sign In</button>
+        <div class="login-hint" id="login-hint"></div>
+      </div>
+      <div class="demo-hint">
+        <strong>Demo credentials:</strong><br>
+        Student: <code>student@demo.com / demo123</code><br>
+        Faculty: <code>faculty@demo.com / demo123</code><br>
+        Admin: <code>admin@demo.com / admin123</code><br>
+        Parent: <code>parent@demo.com / parent123</code>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/canvas3d.js"></script>
+  <script src="js/landing.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

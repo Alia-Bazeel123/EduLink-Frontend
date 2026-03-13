@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduLink – Faculty Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/faculty.css">
+  <script>
+    // Auth guard — runs before body renders
+    (function() {
+      var u = JSON.parse(sessionStorage.getItem('edulink_user') || 'null');
+      if (!u || u.role !== 'faculty') window.location.href = 'index.html';
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark-sm">
+        <svg width="36" height="36" viewBox="0 0 40 40">
+          <rect width="40" height="40" rx="10" fill="white" fill-opacity="0.15"/>
+          <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="white"/>
+          <line x1="20" y1="8" x2="20" y2="14" stroke="white" stroke-width="2"/>
+          <line x1="32" y1="20" x2="26" y2="20" stroke="white" stroke-width="2"/>
+          <line x1="20" y1="32" x2="20" y2="26" stroke="white" stroke-width="2"/>
+          <line x1="8" y1="20" x2="14" y2="20" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">EduLink</span>
+        <span class="sidebar-brand-role faculty-role">Faculty Portal</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a href="#" class="nav-item active" data-page="fac-overview" onclick="facNav('fac-overview', this)">
+        <i data-lucide="layout-dashboard" width="18" height="18"></i><span>Overview</span>
+      </a>
+
+      <div class="nav-section-label">Teaching</div>
+      <a href="#" class="nav-item" data-page="fac-courses" onclick="facNav('fac-courses', this)">
+        <i data-lucide="book-open" width="18" height="18"></i><span>My Courses</span>
+        <span class="nav-count">5</span>
+      </a>
+      <a href="#" class="nav-item" data-page="fac-timetable" onclick="facNav('fac-timetable', this)">
+        <i data-lucide="calendar" width="18" height="18"></i><span>Timetable</span>
+      </a>
+
+      <div class="nav-section-label">Students</div>
+      <a href="#" class="nav-item" data-page="fac-attendance" onclick="facNav('fac-attendance', this)">
+        <i data-lucide="calendar-check" width="18" height="18"></i><span>Attendance</span>
+        <span class="nav-badge" id="att-badge">2</span>
+      </a>
+      <a href="#" class="nav-item" data-page="fac-marks" onclick="facNav('fac-marks', this)">
+        <i data-lucide="bar-chart-2" width="18" height="18"></i><span>Marks Entry</span>
+      </a>
+
+      <div class="nav-section-label">Communication</div>
+      <a href="#" class="nav-item" data-page="fac-announcements" onclick="facNav('fac-announcements', this)">
+        <i data-lucide="megaphone" width="18" height="18"></i><span>Announcements</span>
+      </a>
+
+      <div class="nav-section-label">Account</div>
+      <a href="#" class="nav-item" data-page="fac-profile" onclick="facNav('fac-profile', this)">
+        <i data-lucide="user" width="18" height="18"></i><span>My Profile</span>
+      </a>
+      <a href="#" class="nav-item" data-page="fac-settings" onclick="facNav('fac-settings', this)">
+        <i data-lucide="settings" width="18" height="18"></i><span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar faculty-av" id="sidebar-avatar">DR</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-name">Dr. Rania Hassan</div>
+          <div class="user-id" id="sidebar-id">faculty@demo.com</div>
+        </div>
+      </div>
+      <button class="logout-btn" title="Sign out" onclick="logout()">
+        <i data-lucide="log-out" width="15" height="15"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="main-content" id="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="page-title">Overview</h1>
+        <div class="breadcrumb">Faculty Panel / <span id="breadcrumb-span">Overview</span></div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbar-date"></div>
+        <div class="faculty-badge-topbar">Faculty Member</div>
+        <div class="topbar-avatar faculty-av">DR</div>
+      </div>
+    </div>
+
+    <!-- PAGE: OVERVIEW -->
+    <div class="page-content active" id="page-fac-overview">
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card card-blue">
+          <div class="asc-icon"><i data-lucide="book-open" width="24" height="24"></i></div>
+          <div class="asc-val">5</div>
+          <div class="asc-label">Courses Assigned</div>
+          <div class="asc-sub">Current semester</div>
+        </div>
+        <div class="admin-stat-card card-green">
+          <div class="asc-icon"><i data-lucide="users" width="24" height="24"></i></div>
+          <div class="asc-val">148</div>
+          <div class="asc-label">Total Students</div>
+          <div class="asc-sub">Across all courses</div>
+        </div>
+        <div class="admin-stat-card card-orange">
+          <div class="asc-icon"><i data-lucide="clipboard-list" width="24" height="24"></i></div>
+          <div class="asc-val">12</div>
+          <div class="asc-label">Pending Mark Entries</div>
+          <div class="asc-sub">Due this week</div>
+        </div>
+        <div class="admin-stat-card card-red">
+          <div class="asc-icon"><i data-lucide="alert-triangle" width="24" height="24"></i></div>
+          <div class="asc-val">7</div>
+          <div class="asc-label">Low-Attendance Students</div>
+          <div class="asc-sub">Below 75% threshold</div>
+        </div>
+      </div>
+
+      <div class="admin-lower-grid">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Today's Classes</h3>
+            <span class="card-tag">Thursday</span>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="act-icon"><i data-lucide="clock" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">CS Fundamentals — Room A-201</div>
+                <div class="act-time">08:00 – 09:30 AM · 32 students</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon"><i data-lucide="clock" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">Mathematics II — Room B-104</div>
+                <div class="act-time">10:00 – 11:30 AM · 28 students</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon act-ann"><i data-lucide="clock" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">Data Structures Lab — Lab 3</div>
+                <div class="act-time">01:00 – 03:00 PM · 24 students</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon act-good"><i data-lucide="check-circle" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">Office Hours — Room 318</div>
+                <div class="act-time">03:30 – 04:30 PM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Recent Activity</h3>
+            <span class="card-tag">Today</span>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="act-icon act-good"><i data-lucide="check-circle" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">Attendance marked for CS Fundamentals</div>
+                <div class="act-time">10 mins ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon"><i data-lucide="bar-chart-2" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">Midterm marks submitted for Mathematics II</div>
+                <div class="act-time">2 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon act-ann"><i data-lucide="megaphone" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">Announcement posted: Assignment 3 deadline extended</div>
+                <div class="act-time">Yesterday</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon act-warn"><i data-lucide="alert-triangle" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">3 students flagged for low attendance in Arabic</div>
+                <div class="act-time">Yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Quick Actions</h3></div>
+          <div class="quick-actions-grid">
+            <button class="quick-action-btn" onclick="facNav('fac-attendance', document.querySelector('[data-page=fac-attendance]'))">
+              <i data-lucide="calendar-check" width="20" height="20"></i><span>Mark Attendance</span>
+            </button>
+            <button class="quick-action-btn" onclick="facNav('fac-marks', document.querySelector('[data-page=fac-marks]'))">
+              <i data-lucide="edit-3" width="20" height="20"></i><span>Enter Marks</span>
+            </button>
+            <button class="quick-action-btn" onclick="facNav('fac-announcements', document.querySelector('[data-page=fac-announcements]'))">
+              <i data-lucide="megaphone" width="20" height="20"></i><span>Post Announcement</span>
+            </button>
+            <button class="quick-action-btn" onclick="facNav('fac-courses', document.querySelector('[data-page=fac-courses]'))">
+              <i data-lucide="book-open" width="20" height="20"></i><span>View Courses</span>
+            </button>
+            <button class="quick-action-btn" onclick="showToast('Report exported successfully.')">
+              <i data-lucide="download" width="20" height="20"></i><span>Export Report</span>
+            </button>
+            <button class="quick-action-btn" onclick="facNav('fac-timetable', document.querySelector('[data-page=fac-timetable]'))">
+              <i data-lucide="calendar" width="20" height="20"></i><span>Timetable</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>At-Risk Students</h3>
+            <span class="card-tag status-flagged">7 flagged</span>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Student</th><th>Course</th><th>Attendance</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Fatima Al Zaabi</td><td>Arabic Language</td><td><div class="mini-prog"><div class="mini-prog-fill warn" style="width:68%"></div></div> 68%</td><td><span class="status-badge status-warn">At Risk</span></td></tr>
+                <tr><td>Omar Khalil</td><td>CS Fundamentals</td><td><div class="mini-prog"><div class="mini-prog-fill warn" style="width:71%"></div></div> 71%</td><td><span class="status-badge status-warn">At Risk</span></td></tr>
+                <tr><td>Sara Al Naqbi</td><td>Mathematics II</td><td><div class="mini-prog"><div class="mini-prog-fill warn" style="width:60%"></div></div> 60%</td><td><span class="status-badge status-bad">Critical</span></td></tr>
+                <tr><td>Hamad Al Rashidi</td><td>Physics</td><td><div class="mini-prog"><div class="mini-prog-fill warn" style="width:73%"></div></div> 73%</td><td><span class="status-badge status-warn">At Risk</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: MY COURSES -->
+    <div class="page-content" id="page-fac-courses">
+      <div class="page-intro"><h2>My Courses</h2><p>All courses assigned to you this semester.</p></div>
+      <div class="courses-grid">
+        <div class="course-card cc-blue">
+          <div class="course-code">CS-201</div>
+          <div class="course-name">CS Fundamentals</div>
+          <div class="course-meta">
+            <span><i data-lucide="users" width="12" height="12"></i> 32 students</span>
+            <span><i data-lucide="clock" width="12" height="12"></i> 3 cr hrs</span>
+            <span><i data-lucide="map-pin" width="12" height="12"></i> Room A-201</span>
+          </div>
+          <div class="course-stat-row">
+            <div class="course-stat"><div class="cs-val">88%</div><div class="cs-label">Avg Attendance</div></div>
+            <div class="course-stat"><div class="cs-val">76.4</div><div class="cs-label">Avg Score</div></div>
+            <div class="course-stat"><div class="cs-val">2</div><div class="cs-label">At Risk</div></div>
+          </div>
+        </div>
+        <div class="course-card cc-green">
+          <div class="course-code">MATH-204</div>
+          <div class="course-name">Mathematics II</div>
+          <div class="course-meta">
+            <span><i data-lucide="users" width="12" height="12"></i> 28 students</span>
+            <span><i data-lucide="clock" width="12" height="12"></i> 4 cr hrs</span>
+            <span><i data-lucide="map-pin" width="12" height="12"></i> Room B-104</span>
+          </div>
+          <div class="course-stat-row">
+            <div class="course-stat"><div class="cs-val">91%</div><div class="cs-label">Avg Attendance</div></div>
+            <div class="course-stat"><div class="cs-val">82.1</div><div class="cs-label">Avg Score</div></div>
+            <div class="course-stat"><div class="cs-val">1</div><div class="cs-label">At Risk</div></div>
+          </div>
+        </div>
+        <div class="course-card cc-gold">
+          <div class="course-code">CS-305</div>
+          <div class="course-name">Data Structures &amp; Algorithms</div>
+          <div class="course-meta">
+            <span><i data-lucide="users" width="12" height="12"></i> 24 students</span>
+            <span><i data-lucide="clock" width="12" height="12"></i> 3 cr hrs</span>
+            <span><i data-lucide="map-pin" width="12" height="12"></i> Lab 3</span>
+          </div>
+          <div class="course-stat-row">
+            <div class="course-stat"><div class="cs-val">84%</div><div class="cs-label">Avg Attendance</div></div>
+            <div class="course-stat"><div class="cs-val">78.9</div><div class="cs-label">Avg Score</div></div>
+            <div class="course-stat"><div class="cs-val">3</div><div class="cs-label">At Risk</div></div>
+          </div>
+        </div>
+        <div class="course-card cc-purple">
+          <div class="course-code">CS-401</div>
+          <div class="course-name">Software Engineering</div>
+          <div class="course-meta">
+            <span><i data-lucide="users" width="12" height="12"></i> 36 students</span>
+            <span><i data-lucide="clock" width="12" height="12"></i> 3 cr hrs</span>
+            <span><i data-lucide="map-pin" width="12" height="12"></i> Room C-302</span>
+          </div>
+          <div class="course-stat-row">
+            <div class="course-stat"><div class="cs-val">87%</div><div class="cs-label">Avg Attendance</div></div>
+            <div class="course-stat"><div class="cs-val">80.2</div><div class="cs-label">Avg Score</div></div>
+            <div class="course-stat"><div class="cs-val">1</div><div class="cs-label">At Risk</div></div>
+          </div>
+        </div>
+        <div class="course-card cc-red">
+          <div class="course-code">CS-210</div>
+          <div class="course-name">Arabic Language (Technical)</div>
+          <div class="course-meta">
+            <span><i data-lucide="users" width="12" height="12"></i> 28 students</span>
+            <span><i data-lucide="clock" width="12" height="12"></i> 2 cr hrs</span>
+            <span><i data-lucide="map-pin" width="12" height="12"></i> Room D-101</span>
+          </div>
+          <div class="course-stat-row">
+            <div class="course-stat"><div class="cs-val">75%</div><div class="cs-label">Avg Attendance</div></div>
+            <div class="course-stat"><div class="cs-val">71.3</div><div class="cs-label">Avg Score</div></div>
+            <div class="course-stat"><div class="cs-val">4</div><div class="cs-label">At Risk</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: TIMETABLE -->
+    <div class="page-content" id="page-fac-timetable">
+      <div class="page-intro"><h2>Weekly Timetable</h2><p>Your teaching schedule for this semester.</p></div>
+      <div class="admin-card">
+        <div class="timetable-grid">
+          <div class="tt-header">Time</div>
+          <div class="tt-header">Sunday</div>
+          <div class="tt-header">Monday</div>
+          <div class="tt-header">Tuesday</div>
+          <div class="tt-header">Wednesday</div>
+          <div class="tt-header">Thursday</div>
+          <div class="tt-time">08:00<br>09:30</div>
+          <div class="tt-cell"><div class="tt-class"><div class="tt-class-name">CS Fundamentals</div><div class="tt-class-room">Room A-201</div></div></div>
+          <div class="tt-cell"></div>
+          <div class="tt-cell"><div class="tt-class"><div class="tt-class-name">CS Fundamentals</div><div class="tt-class-room">Room A-201</div></div></div>
+          <div class="tt-cell"></div>
+          <div class="tt-cell"><div class="tt-class"><div class="tt-class-name">CS Fundamentals</div><div class="tt-class-room">Room A-201</div></div></div>
+          <div class="tt-time">10:00<br>11:30</div>
+          <div class="tt-cell"></div>
+          <div class="tt-cell"><div class="tt-class tt-seminar"><div class="tt-class-name">Mathematics II</div><div class="tt-class-room">Room B-104</div></div></div>
+          <div class="tt-cell"></div>
+          <div class="tt-cell"><div class="tt-class tt-seminar"><div class="tt-class-name">Mathematics II</div><div class="tt-class-room">Room B-104</div></div></div>
+          <div class="tt-cell"><div class="tt-class tt-seminar"><div class="tt-class-name">Mathematics II</div><div class="tt-class-room">Room B-104</div></div></div>
+          <div class="tt-time">01:00<br>03:00</div>
+          <div class="tt-cell"></div>
+          <div class="tt-cell"><div class="tt-class tt-lab"><div class="tt-class-name">Data Structures Lab</div><div class="tt-class-room">Lab 3</div></div></div>
+          <div class="tt-cell"></div>
+          <div class="tt-cell"><div class="tt-class tt-lab"><div class="tt-class-name">Data Structures Lab</div><div class="tt-class-room">Lab 3</div></div></div>
+          <div class="tt-cell"><div class="tt-class tt-lab"><div class="tt-class-name">Data Structures Lab</div><div class="tt-class-room">Lab 3</div></div></div>
+          <div class="tt-time">03:30<br>04:30</div>
+          <div class="tt-cell"><div class="tt-class tt-seminar"><div class="tt-class-name">Software Engineering</div><div class="tt-class-room">Room C-302</div></div></div>
+          <div class="tt-cell"></div>
+          <div class="tt-cell"><div class="tt-class tt-seminar"><div class="tt-class-name">Software Engineering</div><div class="tt-class-room">Room C-302</div></div></div>
+          <div class="tt-cell"></div>
+          <div class="tt-cell"></div>
+        </div>
+        <div class="tt-legend">
+          <div class="tt-legend-item"><span class="tt-legend-swatch lecture"></span> Lecture</div>
+          <div class="tt-legend-item"><span class="tt-legend-swatch lab"></span> Lab</div>
+          <div class="tt-legend-item"><span class="tt-legend-swatch seminar"></span> Seminar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: ATTENDANCE -->
+    <div class="page-content" id="page-fac-attendance">
+      <div class="page-intro-row">
+        <div><h2>Attendance Entry</h2><p>Mark and manage student attendance for your courses.</p></div>
+        <button class="btn-primary-action" onclick="showToast('Attendance saved successfully.')">
+          <i data-lucide="save" width="15" height="15"></i> Save Attendance
+        </button>
+      </div>
+      <div class="admin-card mb-18">
+        <div class="admin-search-bar mb-0">
+          <div class="form-group flex-1">
+            <label>Course</label>
+            <select class="form-input select-sm">
+              <option>CS-201 — CS Fundamentals</option>
+              <option>MATH-204 — Mathematics II</option>
+              <option>CS-305 — Data Structures</option>
+              <option>CS-401 — Software Engineering</option>
+              <option>CS-210 — Arabic Language</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label>Date</label>
+            <input type="date" class="form-input" value="2025-03-05"/>
+          </div>
+          <div class="form-group flex-1">
+            <label>Session</label>
+            <select class="form-input select-sm">
+              <option>Lecture</option><option>Lab</option><option>Tutorial</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3>CS-201 · CS Fundamentals · 5 Mar 2025</h3>
+          <span class="card-tag">32 Students</span>
+        </div>
+        <div id="att-entry-list"></div>
+        <div class="att-action-row">
+          <button class="btn-primary-action" onclick="showToast('Attendance saved successfully.')">
+            <i data-lucide="save" width="15" height="15"></i> Save Attendance
+          </button>
+          <button class="btn-cancel" onclick="markAll('present')">Mark All Present</button>
+          <button class="btn-cancel" onclick="markAll('absent')">Mark All Absent</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: MARKS ENTRY -->
+    <div class="page-content" id="page-fac-marks">
+      <div class="page-intro-row">
+        <div><h2>Marks Entry</h2><p>Enter and publish student grades for your courses.</p></div>
+        <button class="btn-primary-action" onclick="showToast('Marks published successfully.')">
+          <i data-lucide="send" width="15" height="15"></i> Publish Marks
+        </button>
+      </div>
+      <div class="admin-card mb-18">
+        <div class="admin-search-bar mb-0">
+          <div class="form-group flex-1">
+            <label>Course</label>
+            <select class="form-input">
+              <option>CS-201 — CS Fundamentals</option>
+              <option>MATH-204 — Mathematics II</option>
+              <option>CS-305 — Data Structures</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label>Assessment Type</label>
+            <select class="form-input select-sm">
+              <option>Midterm Exam</option><option>Final Exam</option>
+              <option>Assignment 1</option><option>Assignment 2</option><option>Quiz</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label>Maximum Marks</label>
+            <input type="number" class="form-input" value="40"/>
+          </div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3>CS-201 · Midterm Exam · Max: 40</h3>
+          <span class="card-tag status-draft">Draft</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="marks-entry-table" id="marks-table">
+            <thead>
+              <tr>
+                <th>Student ID</th><th>Name</th><th>Marks (/ 40)</th><th>Grade</th><th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody id="marks-tbody"></tbody>
+          </table>
+        </div>
+        <div class="marks-action-row">
+          <button class="btn-primary-action" onclick="showToast('Marks saved as draft.')">
+            <i data-lucide="save" width="15" height="15"></i> Save Draft
+          </button>
+          <button class="btn-primary-action btn-publish" onclick="showToast('Marks published successfully.')">
+            <i data-lucide="send" width="15" height="15"></i> Publish
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: ANNOUNCEMENTS -->
+    <div class="page-content" id="page-fac-announcements">
+      <div class="page-intro"><h2>Announcements</h2><p>Post official communications to your students.</p></div>
+      <div class="ann-compose admin-card">
+        <h3>Compose New Announcement</h3>
+        <div class="form-group"><label>Title</label><input type="text" class="form-input" id="ann-title" placeholder="Announcement title"/></div>
+        <div class="form-row">
+          <div class="form-group"><label>Category</label>
+            <select class="form-input" id="ann-category">
+              <option value="academic">Academic</option>
+              <option value="urgent">Urgent</option>
+              <option value="general">General</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Audience</label>
+            <select class="form-input" id="ann-audience">
+              <option>CS-201 — CS Fundamentals</option>
+              <option>MATH-204 — Mathematics II</option>
+              <option>CS-305 — Data Structures</option>
+              <option>All My Students</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Message</label><textarea class="form-input form-textarea" id="ann-body" placeholder="Write your announcement here..."></textarea></div>
+        <div class="form-actions">
+          <button class="btn-save-profile" onclick="postFacultyAnn()">
+            <i data-lucide="send" width="14" height="14"></i> Publish Announcement
+          </button>
+          <button class="btn-cancel" onclick="document.getElementById('ann-title').value='';document.getElementById('ann-body').value=''">Clear</button>
+        </div>
+      </div>
+      <div class="published-anns">
+        <h3 class="section-sub-title">Published Announcements</h3>
+        <div id="fac-ann-list">
+          <div class="ann-card">
+            <div class="ann-cat-dot academic"></div>
+            <div class="ann-body-text">
+              <div class="ann-title">Assignment 3 Deadline Extended</div>
+              <div class="ann-meta">CS-201 · Dr. Rania Hassan · Yesterday at 2:30 PM</div>
+              <div class="ann-preview">The deadline for Assignment 3 has been extended to 12 March 2025. Please submit via the portal.</div>
+            </div>
+          </div>
+          <div class="ann-card">
+            <div class="ann-cat-dot urgent"></div>
+            <div class="ann-body-text">
+              <div class="ann-title">Midterm Exam Venue Change</div>
+              <div class="ann-meta">MATH-204 · Dr. Rania Hassan · 2 days ago</div>
+              <div class="ann-preview">The midterm exam for Mathematics II will be held in Hall B instead of Room B-104. Please note the change.</div>
+            </div>
+          </div>
+          <div class="ann-card">
+            <div class="ann-cat-dot general"></div>
+            <div class="ann-body-text">
+              <div class="ann-title">Office Hours Update — Ramadan Schedule</div>
+              <div class="ann-meta">All My Students · Dr. Rania Hassan · 4 days ago</div>
+              <div class="ann-preview">Office hours during Ramadan will be from 12:00 PM – 1:00 PM, Sunday to Thursday.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: PROFILE -->
+    <div class="page-content" id="page-fac-profile">
+      <div class="page-intro"><h2>My Profile</h2><p>View and manage your faculty information.</p></div>
+      <div class="profile-layout">
+        <div class="profile-card">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar">DR</div>
+            <button class="avatar-edit-btn" title="Change photo"><i data-lucide="edit-2" width="12" height="12"></i></button>
+          </div>
+          <div class="profile-name">Dr. Rania Hassan</div>
+          <div class="profile-id">FAC-2019-00038</div>
+          <div class="profile-program">Department of Computer Science</div>
+          <div class="profile-year">Associate Professor · 6 years</div>
+          <div class="profile-badges">
+            <span class="p-badge">Active Faculty</span>
+            <span class="p-badge gold">5 Courses</span>
+          </div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-section">
+            <h3>Personal Information</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Full Name</label><input type="text" class="form-input" value="Dr. Rania Hassan"/></div>
+              <div class="profile-field"><label>Email Address</label><input type="email" class="form-input" value="rania.hassan@edulinkrak.ac.ae"/></div>
+              <div class="profile-field"><label>Phone Number</label><input type="text" class="form-input" value="+971 55 234 5678"/></div>
+              <div class="profile-field"><label>Office</label><input type="text" class="form-input" value="Room 318, Building A"/></div>
+              <div class="profile-field"><label>Nationality</label><input type="text" class="form-input" value="UAE" readonly/></div>
+              <div class="profile-field"><label>Employee ID</label><input type="text" class="form-input" value="FAC-2019-00038" readonly/></div>
+            </div>
+            <button class="btn-save-profile" onclick="showToast('Profile updated successfully.')">Save Changes</button>
+          </div>
+          <div class="profile-section">
+            <h3>Academic Information</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Department</label><input type="text" class="form-input" value="Computer Science" readonly/></div>
+              <div class="profile-field"><label>Designation</label><input type="text" class="form-input" value="Associate Professor" readonly/></div>
+              <div class="profile-field"><label>Qualification</label><input type="text" class="form-input" value="PhD, Computer Science"/></div>
+              <div class="profile-field"><label>Specialization</label><input type="text" class="form-input" value="Algorithms &amp; Data Structures"/></div>
+            </div>
+          </div>
+          <div class="profile-section">
+            <h3>Change Password</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Current Password</label><input type="password" class="form-input" placeholder="Enter current password"/></div>
+              <div class="profile-field"><label>New Password</label><input type="password" class="form-input" placeholder="Enter new password"/></div>
+              <div class="profile-field"><label>Confirm Password</label><input type="password" class="form-input" placeholder="Confirm new password"/></div>
+            </div>
+            <button class="btn-save-profile" onclick="showToast('Password updated.')">Update Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: SETTINGS -->
+    <div class="page-content" id="page-fac-settings">
+      <div class="page-intro"><h2>Settings</h2><p>Manage your notification preferences and account settings.</p></div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <h3>Notifications</h3>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="fn1"><label for="fn1" class="toggle-label"></label><span>Email notifications</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="fn2"><label for="fn2" class="toggle-label"></label><span>In-app alerts</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="fn3"><label for="fn3" class="toggle-label"></label><span>SMS notifications</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="fn4"><label for="fn4" class="toggle-label"></label><span>Low-attendance alerts</span></div></div>
+          <button class="btn-save-profile" onclick="showToast('Preferences saved.')">Save Preferences</button>
+        </div>
+        <div class="settings-card">
+          <h3>Grade Thresholds</h3>
+          <div class="form-group"><label>A+ Minimum (%)</label><input type="number" class="form-input" value="90"/></div>
+          <div class="form-group"><label>A Minimum (%)</label><input type="number" class="form-input" value="85"/></div>
+          <div class="form-group"><label>B+ Minimum (%)</label><input type="number" class="form-input" value="75"/></div>
+          <div class="form-group"><label>Pass Mark (%)</label><input type="number" class="form-input" value="50"/></div>
+          <button class="btn-save-profile" onclick="showToast('Thresholds saved.')">Save Settings</button>
+        </div>
+        <div class="settings-card">
+          <h3>Attendance Settings</h3>
+          <div class="form-group"><label>Minimum Attendance Required (%)</label><input type="number" class="form-input" value="75"/></div>
+          <div class="form-group"><label>Alert Threshold (%)</label><input type="number" class="form-input" value="80"/></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="fn5"><label for="fn5" class="toggle-label"></label><span>Auto-flag at-risk students</span></div></div>
+          <button class="btn-save-profile" onclick="showToast('Settings saved.')">Save Settings</button>
+        </div>
+        <div class="settings-card">
+          <h3>Display &amp; Accessibility</h3>
+          <div class="form-group"><label>Language</label>
+            <select class="form-input"><option>English</option><option>Arabic</option></select>
+          </div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="fn6"><label for="fn6" class="toggle-label"></label><span>Compact view</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="fn7"><label for="fn7" class="toggle-label"></label><span>High contrast mode</span></div></div>
+          <button class="btn-save-profile" onclick="showToast('Display preferences saved.')">Save Preferences</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const pageTitles = {
+      'fac-overview':'Overview','fac-courses':'My Courses','fac-timetable':'Timetable',
+      'fac-attendance':'Attendance','fac-marks':'Marks Entry',
+      'fac-announcements':'Announcements','fac-profile':'My Profile','fac-settings':'Settings',
+    };
+
+    function facNav(page, el) {
+      document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const target = document.getElementById('page-' + page);
+      if (target) target.classList.add('active');
+      if (el) el.classList.add('active');
+      document.getElementById('page-title').textContent = pageTitles[page] || page;
+      document.getElementById('breadcrumb-span').textContent = pageTitles[page] || page;
+    }
+
+    document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-GB',
+      { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function logout() {
+      if (confirm('Sign out of EduLink?')) {
+        sessionStorage.removeItem('edulink_user');
+        window.location.href = 'index.html';
+      }
+    }
+
+    const demoStudents = [
+      { id:'STU-2024-00142', name:'Ahmed Al Mansouri' },
+      { id:'STU-2024-00198', name:'Fatima Al Zaabi' },
+      { id:'STU-2024-00204', name:'Omar Khalil' },
+      { id:'STU-2024-00217', name:'Sara Al Naqbi' },
+      { id:'STU-2024-00231', name:'Hamad Al Rashidi' },
+      { id:'STU-2024-00256', name:'Noura Al Mazrouei' },
+      { id:'STU-2024-00271', name:'Khalid Al Amri' },
+      { id:'STU-2024-00283', name:'Aisha Bint Salem' },
+    ];
+    const attStates = {};
+
+    function buildAttList() {
+      document.getElementById('att-entry-list').innerHTML = demoStudents.map((s, i) => {
+        attStates[i] = 'present';
+        return `<div class="att-entry-row" id="att-row-${i}">
+          <div><div class="att-entry-name">${s.name}</div><div class="att-entry-id">${s.id}</div></div>
+          <div class="att-toggle-group">
+            <button class="att-toggle-btn present" id="btn-p-${i}" onclick="setAtt(${i},'present')">Present</button>
+            <button class="att-toggle-btn inactive" id="btn-a-${i}" onclick="setAtt(${i},'absent')">Absent</button>
+          </div></div>`;
+      }).join('');
+    }
+
+    function setAtt(i, state) {
+      attStates[i] = state;
+      document.getElementById('btn-p-'+i).className = 'att-toggle-btn ' + (state==='present' ? 'present' : 'inactive');
+      document.getElementById('btn-a-'+i).className = 'att-toggle-btn ' + (state==='absent'  ? 'absent'  : 'inactive');
+    }
+    function markAll(state) { demoStudents.forEach((_, i) => setAtt(i, state)); }
+
+    function buildMarksTable() {
+      const grades = [38, 32, 29, 35, 27, 40, 33, 36];
+      document.getElementById('marks-tbody').innerHTML = demoStudents.map((s, i) => {
+        const g = grades[i];
+        const grade = g >= 36 ? 'A+' : g >= 32 ? 'A' : g >= 28 ? 'B+' : 'B';
+        const col = g >= 36 ? 'var(--status-good-fg)' : g >= 32 ? 'var(--accent)' : 'var(--text-mid)';
+        return `<tr>
+          <td class="cell-mono">${s.id}</td>
+          <td class="cell-bold">${s.name}</td>
+          <td><input type="number" class="marks-input" value="${g}" min="0" max="40" onchange="recalcGrade(this,${i})"/></td>
+          <td><span id="grade-pill-${i}" style="font-weight:700;color:${col}">${grade}</span></td>
+          <td><input type="text" class="form-input remarks-input" placeholder="Optional remarks"/></td>
+        </tr>`;
+      }).join('');
+    }
+
+    function recalcGrade(input, i) {
+      const v = parseInt(input.value) || 0;
+      const grade = v >= 36 ? 'A+' : v >= 32 ? 'A' : v >= 28 ? 'B+' : v >= 20 ? 'B' : 'F';
+      const col = v >= 36 ? 'var(--status-good-fg)' : v >= 32 ? 'var(--accent)' : v >= 20 ? 'var(--text-mid)' : 'var(--red)';
+      const pill = document.getElementById('grade-pill-'+i);
+      if (pill) { pill.textContent = grade; pill.style.color = col; }
+    }
+
+    function postFacultyAnn() {
+      const title = document.getElementById('ann-title').value.trim();
+      const body  = document.getElementById('ann-body').value.trim();
+      const cat   = document.getElementById('ann-category').value;
+      if (!title || !body) { showToast('Please fill in title and message.'); return; }
+      const card = document.createElement('div');
+      card.className = 'ann-card';
+      card.innerHTML = `<div class="ann-cat-dot ${cat}"></div>
+        <div class="ann-body-text">
+          <div class="ann-title">${title}</div>
+          <div class="ann-meta">Selected course · Dr. Rania Hassan · Just now</div>
+          <div class="ann-preview">${body}</div>
+        </div>`;
+      document.getElementById('fac-ann-list').prepend(card);
+      document.getElementById('ann-title').value = '';
+      document.getElementById('ann-body').value = '';
+      showToast('Announcement published.');
+    }
+
+    buildAttList();
+    buildMarksTable();
+    lucide.createIcons();
+  </script>
+</body>
+</html>

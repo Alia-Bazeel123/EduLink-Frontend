@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduLink – Admin Panel</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="dashboard-body admin-body">
+
+  <aside class="sidebar admin-sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark-sm">
+        <svg width="36" height="36" viewBox="0 0 40 40">
+          <rect width="40" height="40" rx="10" fill="white" fill-opacity="0.15"/>
+          <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="white"/>
+          <line x1="20" y1="8" x2="20" y2="14" stroke="white" stroke-width="2"/>
+          <line x1="32" y1="20" x2="26" y2="20" stroke="white" stroke-width="2"/>
+          <line x1="20" y1="32" x2="20" y2="26" stroke="white" stroke-width="2"/>
+          <line x1="8" y1="20" x2="14" y2="20" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">EduLink</span>
+        <span class="sidebar-brand-role admin-role">IT Admin</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a href="#" class="nav-item active" data-page="admin-overview" onclick="adminNav('admin-overview',this)">
+        <i data-lucide="layout-dashboard" width="18" height="18"></i><span>Overview</span>
+      </a>
+
+      <div class="nav-section-label">Users</div>
+      <a href="#" class="nav-item" data-page="admin-students" onclick="adminNav('admin-students',this)">
+        <i data-lucide="users" width="18" height="18"></i><span>Students</span>
+        <span class="nav-count">2,412</span>
+      </a>
+
+      <div class="nav-section-label">Compliance</div>
+      <a href="#" class="nav-item" data-page="admin-documents" onclick="adminNav('admin-documents',this)">
+        <i data-lucide="folder-open" width="18" height="18"></i><span>Documents</span>
+        <span class="nav-badge">8</span>
+      </a>
+
+      <div class="nav-section-label">Communication</div>
+      <a href="#" class="nav-item" data-page="admin-announcements" onclick="adminNav('admin-announcements',this)">
+        <i data-lucide="megaphone" width="18" height="18"></i><span>Announcements</span>
+      </a>
+
+      <div class="nav-section-label">System</div>
+      <a href="#" class="nav-item" data-page="admin-settings" onclick="adminNav('admin-settings',this)">
+        <i data-lucide="settings" width="18" height="18"></i><span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar admin-av">IT</div>
+        <div class="user-info">
+          <div class="user-name">IT Admin</div>
+          <div class="user-id">admin@demo.com</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="logout()" title="Sign out">
+        <i data-lucide="log-out" width="15" height="15"></i>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="main-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="page-title">Overview</h1>
+        <div class="breadcrumb">Admin Panel / <span id="breadcrumb">Overview</span></div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbar-date"></div>
+        <div class="admin-badge-topbar">IT Administrator</div>
+        <div class="topbar-avatar admin-av">IT</div>
+      </div>
+    </div>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div class="page-content active" id="page-admin-overview">
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card card-blue">
+          <div class="asc-icon"><i data-lucide="users" width="24" height="24"></i></div>
+          <div class="asc-val">2,412</div>
+          <div class="asc-label">Total Students</div>
+          <div class="asc-sub">↑ 142 this semester</div>
+        </div>
+        <div class="admin-stat-card card-green">
+          <div class="asc-icon"><i data-lucide="shield-check" width="24" height="24"></i></div>
+          <div class="asc-val">85%</div>
+          <div class="asc-label">Document Compliance</div>
+          <div class="asc-sub">342 fully compliant</div>
+        </div>
+        <div class="admin-stat-card card-orange">
+          <div class="asc-icon"><i data-lucide="file-warning" width="24" height="24"></i></div>
+          <div class="asc-val">38</div>
+          <div class="asc-label">Expiring Documents</div>
+          <div class="asc-sub">Next 7 days</div>
+        </div>
+        <div class="admin-stat-card card-red">
+          <div class="asc-icon"><i data-lucide="alert-triangle" width="24" height="24"></i></div>
+          <div class="asc-val">8</div>
+          <div class="asc-label">Pending Reviews</div>
+          <div class="asc-sub">Awaiting approval</div>
+        </div>
+      </div>
+
+      <div class="admin-lower-grid">
+        <!-- Recent Activity -->
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Recent Activity</h3><span class="card-tag">Today</span></div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="act-icon act-upload"><i data-lucide="upload" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">Ahmed Al Mansouri uploaded Health Certificate</div>
+                <div class="act-time">10 mins ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon act-ann"><i data-lucide="megaphone" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">New announcement: Mid-term schedule released</div>
+                <div class="act-time">1 hour ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon act-warn"><i data-lucide="alert-triangle" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">8 documents pending compliance review</div>
+                <div class="act-time">2 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon act-user"><i data-lucide="user-plus" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">New student enrolled: Fatima Khalid Al Zaabi</div>
+                <div class="act-time">3 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="act-icon act-upload"><i data-lucide="shield" width="16" height="16"></i></div>
+              <div class="act-body">
+                <div class="act-title">System backup completed successfully</div>
+                <div class="act-time">4 hours ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Compliance -->
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Document Compliance</h3><span class="card-tag">Live</span></div>
+          <div class="compliance-chart">
+            <div class="donut-wrap">
+              <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="48" fill="none" stroke="#e8edf5" stroke-width="14"/>
+                <circle cx="60" cy="60" r="48" fill="none" stroke="#23314f" stroke-width="14" stroke-dasharray="301.6" stroke-dashoffset="45" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+                <circle cx="60" cy="60" r="48" fill="none" stroke="#f4b942" stroke-width="14" stroke-dasharray="301.6" stroke-dashoffset="195" stroke-linecap="round" transform="rotate(24 60 60)"/>
+                <circle cx="60" cy="60" r="48" fill="none" stroke="#e05252" stroke-width="14" stroke-dasharray="301.6" stroke-dashoffset="264" stroke-linecap="round" transform="rotate(130 60 60)"/>
+                <text x="60" y="56" text-anchor="middle" fill="#23314f" font-size="18" font-weight="700" font-family="DM Sans">85%</text>
+                <text x="60" y="70" text-anchor="middle" fill="#7a8ba8" font-size="10" font-family="DM Sans">Compliant</text>
+              </svg>
+            </div>
+            <div class="compliance-legend">
+              <div class="comp-item"><span class="comp-dot" style="background:#23314f"></span>Compliant (85%)</div>
+              <div class="comp-item"><span class="comp-dot" style="background:#f4b942"></span>Expiring Soon (10%)</div>
+              <div class="comp-item"><span class="comp-dot" style="background:#e05252"></span>Expired / Pending (5%)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Quick Actions</h3></div>
+          <div class="quick-actions-grid">
+            <button class="quick-action-btn" onclick="adminNav('admin-announcements', document.querySelector('[data-page=admin-announcements]'))">
+              <i data-lucide="megaphone" width="20" height="20"></i><span>Post Announcement</span>
+            </button>
+            <button class="quick-action-btn" onclick="adminNav('admin-students', document.querySelector('[data-page=admin-students]'))">
+              <i data-lucide="user-plus" width="20" height="20"></i><span>Add Student</span>
+            </button>
+            <button class="quick-action-btn" onclick="adminNav('admin-documents', document.querySelector('[data-page=admin-documents]'))">
+              <i data-lucide="folder-check" width="20" height="20"></i><span>Review Documents</span>
+            </button>
+            <button class="quick-action-btn" onclick="showToast('Export generated successfully.')">
+              <i data-lucide="download" width="20" height="20"></i><span>Export Reports</span>
+            </button>
+            <button class="quick-action-btn" onclick="adminNav('admin-settings', document.querySelector('[data-page=admin-settings]'))">
+              <i data-lucide="settings" width="20" height="20"></i><span>System Settings</span>
+            </button>
+            <button class="quick-action-btn" onclick="showToast('Backup initiated...')">
+              <i data-lucide="database" width="20" height="20"></i><span>Backup Data</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>System Status</h3><span class="card-tag status-online">All Systems Go</span></div>
+          <div class="sys-status-list">
+            <div class="sys-status-row">
+              <div class="sys-status-label"><i data-lucide="server" width="14" height="14"></i> Application Server</div>
+              <div class="sys-status-val online">Online</div>
+            </div>
+            <div class="sys-status-row">
+              <div class="sys-status-label"><i data-lucide="database" width="14" height="14"></i> Database</div>
+              <div class="sys-status-val online">Online</div>
+            </div>
+            <div class="sys-status-row">
+              <div class="sys-status-label"><i data-lucide="cloud" width="14" height="14"></i> File Storage</div>
+              <div class="sys-status-val online">Online</div>
+            </div>
+            <div class="sys-status-row">
+              <div class="sys-status-label"><i data-lucide="mail" width="14" height="14"></i> Email Service</div>
+              <div class="sys-status-val online">Online</div>
+            </div>
+            <div class="sys-status-row">
+              <div class="sys-status-label"><i data-lucide="clock" width="14" height="14"></i> Last Backup</div>
+              <div class="sys-status-val muted">Today, 04:00 AM</div>
+            </div>
+            <div class="sys-status-row">
+              <div class="sys-status-label"><i data-lucide="hard-drive" width="14" height="14"></i> Storage Used</div>
+              <div class="sys-status-val muted">42 GB / 200 GB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STUDENTS ===== -->
+    <div class="page-content" id="page-admin-students">
+      <div class="page-intro-row">
+        <div><h2>Student Records</h2><p>View, search, and manage all enrolled students.</p></div>
+        <button class="btn-primary-action" onclick="showAddStudentModal()">
+          <i data-lucide="user-plus" width="15" height="15"></i> Add Student
+        </button>
+      </div>
+      <div class="admin-search-bar">
+        <div class="search-input-wrap">
+          <i data-lucide="search" width="16" height="16"></i>
+          <input type="text" placeholder="Search by name, ID, or program..." class="form-input search-input" id="student-search" oninput="searchStudents(this.value)"/>
+        </div>
+        <select class="form-input select-sm" id="student-program-filter" onchange="searchStudents(document.getElementById('student-search').value)">
+          <option value="">All Programs</option>
+          <option>Computer Science</option>
+          <option>Business Administration</option>
+          <option>Electrical Engineering</option>
+          <option>Media Studies</option>
+        </select>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="students-table">
+          <thead>
+            <tr>
+              <th>Student ID</th><th>Name</th><th>Program</th><th>GPA</th><th>Attendance</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="students-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Add Student Modal -->
+      <div class="modal-overlay" id="add-student-modal" style="display:none">
+        <div class="modal-box">
+          <button class="modal-close" onclick="document.getElementById('add-student-modal').style.display='none'">
+            <i data-lucide="x" width="16" height="16"></i>
+          </button>
+          <h2 class="modal-title">Add New Student</h2>
+          <div class="modal-form">
+            <div class="form-row">
+              <div class="form-group"><label>Full Name</label><input type="text" class="form-input" id="new-stu-name" placeholder="Full name"/></div>
+              <div class="form-group"><label>Email</label><input type="email" class="form-input" id="new-stu-email" placeholder="email@edulinkrak.ac.ae"/></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Program</label>
+                <select class="form-input" id="new-stu-program">
+                  <option>Computer Science</option><option>Business Administration</option>
+                  <option>Electrical Engineering</option><option>Media Studies</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Year</label>
+                <select class="form-input"><option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option></select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Nationality</label><input type="text" class="form-input" placeholder="UAE"/></div>
+              <div class="form-group"><label>Date of Birth</label><input type="date" class="form-input"/></div>
+            </div>
+            <button class="btn-login" onclick="addStudent()">Add Student</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DOCUMENTS ===== -->
+    <div class="page-content" id="page-admin-documents">
+      <div class="page-intro"><h2>Document Compliance Center</h2><p>Review, approve, and manage student-submitted documents.</p></div>
+      <div class="doc-review-tabs">
+        <button class="doc-filter active" onclick="adminDocFilter('pending',this)">Pending Review (8)</button>
+        <button class="doc-filter" onclick="adminDocFilter('approved',this)">Approved</button>
+        <button class="doc-filter" onclick="adminDocFilter('expiring',this)">Expiring Soon</button>
+        <button class="doc-filter" onclick="adminDocFilter('rejected',this)">Rejected</button>
+      </div>
+      <div class="admin-doc-list" id="admin-doc-list"></div>
+    </div>
+
+    <!-- ===== ANNOUNCEMENTS ===== -->
+    <div class="page-content" id="page-admin-announcements">
+      <div class="page-intro"><h2>Announcements</h2><p>Compose and publish official campus-wide communications.</p></div>
+      <div class="ann-compose admin-card">
+        <h3>Compose New Announcement</h3>
+        <div class="form-group"><label>Title</label><input type="text" class="form-input" id="ann-title" placeholder="Announcement title"/></div>
+        <div class="form-row">
+          <div class="form-group"><label>Category</label>
+            <select class="form-input" id="ann-category">
+              <option value="urgent">Urgent</option>
+              <option value="academic">Academic</option>
+              <option value="admin">Administrative</option>
+              <option value="general">General</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Audience</label>
+            <select class="form-input" id="ann-audience">
+              <option>All Students</option><option>Computer Science</option>
+              <option>Business Administration</option><option>Electrical Engineering</option>
+              <option>All Users</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Message</label><textarea class="form-input form-textarea" id="ann-body" placeholder="Write your announcement here..."></textarea></div>
+        <div class="form-actions">
+          <button class="btn-save-profile" onclick="postAnnouncement()">
+            <i data-lucide="send" width="14" height="14"></i> Publish Announcement
+          </button>
+          <button class="btn-cancel" onclick="clearAnnForm()">Clear</button>
+        </div>
+      </div>
+      <div class="published-anns">
+        <h3 class="section-sub-title">Published Announcements</h3>
+        <div id="admin-ann-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS ===== -->
+    <div class="page-content" id="page-admin-settings">
+      <div class="page-intro"><h2>System Settings</h2><p>Configure platform-wide settings and preferences.</p></div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <h3>General</h3>
+          <div class="form-group"><label>University Name</label><input type="text" class="form-input" value="RAK University of Applied Sciences"/></div>
+          <div class="form-group"><label>Campus</label><input type="text" class="form-input" value="RAK Campus"/></div>
+          <div class="form-group"><label>Academic Year</label><input type="text" class="form-input" value="2024–2025"/></div>
+          <div class="form-group"><label>Current Semester</label><select class="form-input"><option>Semester 1</option><option>Semester 2</option></select></div>
+          <button class="btn-save-profile">Save Settings</button>
+        </div>
+        <div class="settings-card">
+          <h3>Document Compliance</h3>
+          <div class="form-group"><label>Expiry Reminder (days before)</label><input type="number" class="form-input" value="7"/></div>
+          <div class="form-group"><label>Max File Size (MB)</label><input type="number" class="form-input" value="10"/></div>
+          <div class="form-group"><label>Allowed Formats</label><input type="text" class="form-input" value="PDF, JPG, PNG"/></div>
+          <div class="form-group"><label>Auto-Notify Students</label>
+            <div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="auto-notify"><label for="auto-notify" class="toggle-label"></label><span>Enabled</span></div>
+          </div>
+          <button class="btn-save-profile">Save Settings</button>
+        </div>
+        <div class="settings-card">
+          <h3>Notifications</h3>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="n1"><label for="n1" class="toggle-label"></label><span>Email notifications</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="n2"><label for="n2" class="toggle-label"></label><span>In-app notifications</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="n3"><label for="n3" class="toggle-label"></label><span>SMS alerts</span></div></div>
+          <button class="btn-save-profile">Save Preferences</button>
+        </div>
+        <div class="settings-card">
+          <h3>Access Control</h3>
+          <div class="form-group"><label>Admin Email</label><input type="email" class="form-input" value="admin@demo.com"/></div>
+          <div class="form-group"><label>Session Timeout (minutes)</label><input type="number" class="form-input" value="60"/></div>
+          <div class="form-group"><label>Two-Factor Auth</label>
+            <div class="toggle-wrap"><input type="checkbox" class="toggle" id="n4"><label for="n4" class="toggle-label"></label><span>Disabled</span></div>
+          </div>
+          <button class="btn-save-profile">Save Settings</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/admin.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

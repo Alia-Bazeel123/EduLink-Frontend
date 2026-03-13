@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduLink – Student Dashboard</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="dashboard-body">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark-sm">
+        <svg width="36" height="36" viewBox="0 0 40 40">
+          <rect width="40" height="40" rx="10" fill="white" fill-opacity="0.15"/>
+          <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="white"/>
+          <line x1="20" y1="8" x2="20" y2="14" stroke="white" stroke-width="2"/>
+          <line x1="32" y1="20" x2="26" y2="20" stroke="white" stroke-width="2"/>
+          <line x1="20" y1="32" x2="20" y2="26" stroke="white" stroke-width="2"/>
+          <line x1="8" y1="20" x2="14" y2="20" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">EduLink</span>
+        <span class="sidebar-brand-role">Student Portal</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="#" class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard',this)">
+        <i data-lucide="layout-dashboard" width="18" height="18"></i><span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-page="attendance" onclick="navigateTo('attendance',this)">
+        <i data-lucide="calendar-check" width="18" height="18"></i><span>Attendance</span>
+      </a>
+      <a href="#" class="nav-item" data-page="marksheet" onclick="navigateTo('marksheet',this)">
+        <i data-lucide="bar-chart-2" width="18" height="18"></i><span>Marksheet</span>
+      </a>
+      <a href="#" class="nav-item" data-page="documents" onclick="navigateTo('documents',this)">
+        <i data-lucide="folder-open" width="18" height="18"></i><span>Documents</span>
+        <span class="nav-badge" id="doc-badge">1</span>
+      </a>
+      <a href="#" class="nav-item" data-page="announcements" onclick="navigateTo('announcements',this)">
+        <i data-lucide="megaphone" width="18" height="18"></i><span>Announcements</span>
+        <span class="nav-badge">3</span>
+      </a>
+      <a href="#" class="nav-item" data-page="profile" onclick="navigateTo('profile',this)">
+        <i data-lucide="user" width="18" height="18"></i><span>My Profile</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebar-avatar">AM</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-name">Ahmed M.</div>
+          <div class="user-id" id="sidebar-id">STU-2024-00142</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="logout()" title="Sign out">
+        <i data-lucide="log-out" width="15" height="15"></i>
+      </button>
+    </div>
+  </aside>
+
+  <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <main class="main-content" id="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="page-title">Dashboard</h1>
+        <div class="breadcrumb" id="breadcrumb">Home / Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbar-date"></div>
+        <button class="notif-btn" onclick="toggleNotifications()" title="Notifications">
+          <i data-lucide="bell" width="18" height="18"></i>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="topbar-avatar" id="topbar-avatar">AM</div>
+      </div>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div class="notif-panel" id="notif-panel">
+      <div class="notif-panel-header">Notifications</div>
+      <div class="notif-list">
+        <div class="notif-item unread">
+          <div class="notif-icon-sm"><i data-lucide="file-text" width="15" height="15"></i></div>
+          <div class="notif-content">
+            <div class="notif-msg">Semester 1 marksheet has been published</div>
+            <div class="notif-time">2 minutes ago</div>
+          </div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon-sm warn-ic"><i data-lucide="alert-triangle" width="15" height="15"></i></div>
+          <div class="notif-content">
+            <div class="notif-msg">Health Certificate expires in 3 days</div>
+            <div class="notif-time">1 hour ago</div>
+          </div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon-sm"><i data-lucide="megaphone" width="15" height="15"></i></div>
+          <div class="notif-content">
+            <div class="notif-msg">Library timings updated for Ramadan</div>
+            <div class="notif-time">3 hours ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon-sm good-ic"><i data-lucide="check-circle" width="15" height="15"></i></div>
+          <div class="notif-content">
+            <div class="notif-msg">Attendance confirmed for today</div>
+            <div class="notif-time">Yesterday</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page-content active" id="page-dashboard">
+      <div class="welcome-banner">
+        <div class="welcome-text">
+          <div class="welcome-greeting" id="welcome-greeting">Good morning,</div>
+          <div class="welcome-name" id="welcome-name">Ahmed Al Mansouri</div>
+          <div class="welcome-sub">Semester 1, 2024–25 · Bachelor of Computer Science</div>
+        </div>
+        <div class="welcome-gpa">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="8"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="63" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+            <text x="50" y="46" text-anchor="middle" fill="white" font-size="20" font-weight="700" font-family="DM Sans">3.8</text>
+            <text x="50" y="60" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10" font-family="DM Sans">GPA</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card" onclick="navigateTo('attendance', document.querySelector('[data-page=attendance]'))">
+          <div class="stat-card-icon"><i data-lucide="calendar-check" width="22" height="22"></i></div>
+          <div class="stat-card-val">87%</div>
+          <div class="stat-card-label">Attendance Rate</div>
+          <div class="stat-card-sub">Above minimum threshold</div>
+          <div class="stat-trend trend-up">↑ 2% this week</div>
+        </div>
+        <div class="stat-card" onclick="navigateTo('marksheet', document.querySelector('[data-page=marksheet]'))">
+          <div class="stat-card-icon"><i data-lucide="bar-chart-2" width="22" height="22"></i></div>
+          <div class="stat-card-val">3.8</div>
+          <div class="stat-card-label">Current GPA</div>
+          <div class="stat-card-sub">Dean's List eligible</div>
+          <div class="stat-trend trend-up">↑ 0.2 from last sem</div>
+        </div>
+        <div class="stat-card" onclick="navigateTo('documents', document.querySelector('[data-page=documents]'))">
+          <div class="stat-card-icon"><i data-lucide="folder-open" width="22" height="22"></i></div>
+          <div class="stat-card-val">5</div>
+          <div class="stat-card-label">Documents</div>
+          <div class="stat-card-sub warn-text">1 expiring soon</div>
+          <div class="stat-trend trend-warn">Action needed</div>
+        </div>
+        <div class="stat-card" onclick="navigateTo('announcements', document.querySelector('[data-page=announcements]'))">
+          <div class="stat-card-icon"><i data-lucide="megaphone" width="22" height="22"></i></div>
+          <div class="stat-card-val">3</div>
+          <div class="stat-card-label">New Announcements</div>
+          <div class="stat-card-sub">Unread messages</div>
+          <div class="stat-trend">Check now →</div>
+        </div>
+      </div>
+
+      <div class="dash-lower-grid">
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>Weekly Attendance</h3>
+            <span class="card-tag">This Week</span>
+          </div>
+          <div class="attendance-chart">
+            <div class="chart-bars" id="attendance-chart"></div>
+            <div class="chart-legend">
+              <span class="legend-item present">Present</span>
+              <span class="legend-item absent">Absent</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>Recent Grades</h3>
+            <a href="#" class="card-link" onclick="navigateTo('marksheet', document.querySelector('[data-page=marksheet]'))">View all →</a>
+          </div>
+          <div class="grade-list">
+            <div class="grade-row">
+              <div class="grade-subject">Mathematics II</div>
+              <div class="grade-score">
+                <div class="score-bar"><div class="score-fill" style="width:85%"></div></div>
+                <span class="score-val">85/100</span>
+                <span class="grade-badge grade-A">A</span>
+              </div>
+            </div>
+            <div class="grade-row">
+              <div class="grade-subject">Physics</div>
+              <div class="grade-score">
+                <div class="score-bar"><div class="score-fill" style="width:91%"></div></div>
+                <span class="score-val">91/100</span>
+                <span class="grade-badge grade-A">A+</span>
+              </div>
+            </div>
+            <div class="grade-row">
+              <div class="grade-subject">CS Fundamentals</div>
+              <div class="grade-score">
+                <div class="score-bar"><div class="score-fill" style="width:76%"></div></div>
+                <span class="score-val">76/100</span>
+                <span class="grade-badge grade-B">B+</span>
+              </div>
+            </div>
+            <div class="grade-row">
+              <div class="grade-subject">English Communication</div>
+              <div class="grade-score">
+                <div class="score-bar"><div class="score-fill" style="width:88%"></div></div>
+                <span class="score-val">88/100</span>
+                <span class="grade-badge grade-A">A</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>Latest Announcements</h3>
+            <a href="#" class="card-link" onclick="navigateTo('announcements', document.querySelector('[data-page=announcements]'))">View all →</a>
+          </div>
+          <div class="announce-list">
+            <div class="announce-item">
+              <div class="announce-dot urgent"></div>
+              <div class="announce-body">
+                <div class="announce-title">Mid-Term Exam Schedule Released</div>
+                <div class="announce-meta">Academic Office · 2 hours ago</div>
+              </div>
+            </div>
+            <div class="announce-item">
+              <div class="announce-dot"></div>
+              <div class="announce-body">
+                <div class="announce-title">Library Ramadan Hours Update</div>
+                <div class="announce-meta">Library Services · 5 hours ago</div>
+              </div>
+            </div>
+            <div class="announce-item">
+              <div class="announce-dot"></div>
+              <div class="announce-body">
+                <div class="announce-title">Student ID Card Renewal Drive</div>
+                <div class="announce-meta">Admin Office · Yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>Document Status</h3>
+            <a href="#" class="card-link" onclick="navigateTo('documents', document.querySelector('[data-page=documents]'))">Manage →</a>
+          </div>
+          <div class="doc-status-list">
+            <div class="doc-status-item expiring">
+              <div class="doc-status-icon warn-ic"><i data-lucide="alert-triangle" width="16" height="16"></i></div>
+              <div class="doc-status-info">
+                <div class="doc-status-name">Health Certificate</div>
+                <div class="doc-status-date">Expires: 8 March 2025</div>
+              </div>
+              <div class="doc-status-badge badge-expiring">3 days</div>
+            </div>
+            <div class="doc-status-item valid">
+              <div class="doc-status-icon good-ic"><i data-lucide="check-circle" width="16" height="16"></i></div>
+              <div class="doc-status-info">
+                <div class="doc-status-name">Emirates ID Copy</div>
+                <div class="doc-status-date">Valid until: Dec 2027</div>
+              </div>
+              <div class="doc-status-badge badge-valid">Valid</div>
+            </div>
+            <div class="doc-status-item valid">
+              <div class="doc-status-icon good-ic"><i data-lucide="check-circle" width="16" height="16"></i></div>
+              <div class="doc-status-info">
+                <div class="doc-status-name">Passport Copy</div>
+                <div class="doc-status-date">Valid until: Sep 2028</div>
+              </div>
+              <div class="doc-status-badge badge-valid">Valid</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ATTENDANCE ===== -->
+    <div class="page-content" id="page-attendance">
+      <div class="page-intro"><h2>Attendance Overview</h2><p>Track your presence across all enrolled subjects.</p></div>
+      <div class="att-summary-row">
+        <div class="att-summary-card"><div class="att-summary-val">87%</div><div class="att-summary-label">Overall Rate</div><div class="att-status-bar"><div class="att-status-fill" style="width:87%"></div></div></div>
+        <div class="att-summary-card"><div class="att-summary-val">42</div><div class="att-summary-label">Classes Attended</div></div>
+        <div class="att-summary-card warn-card"><div class="att-summary-val">6</div><div class="att-summary-label">Classes Missed</div></div>
+        <div class="att-summary-card"><div class="att-summary-val">75%</div><div class="att-summary-label">Min. Required</div></div>
+      </div>
+      <div class="att-subjects-list">
+        <h3 class="section-sub-title">Subject-wise Attendance</h3>
+        <div class="att-subject-table">
+          <div class="att-table-header"><span>Subject</span><span>Total</span><span>Attended</span><span>Missed</span><span>Percentage</span><span>Status</span></div>
+          <div class="att-table-row"><span class="sub-name">Mathematics II</span><span>20</span><span>18</span><span>2</span><span><div class="mini-prog"><div class="mini-prog-fill" style="width:90%"></div></div><b>90%</b></span><span class="status-badge status-good">Good</span></div>
+          <div class="att-table-row"><span class="sub-name">Physics</span><span>18</span><span>16</span><span>2</span><span><div class="mini-prog"><div class="mini-prog-fill" style="width:89%"></div></div><b>89%</b></span><span class="status-badge status-good">Good</span></div>
+          <div class="att-table-row warn-row"><span class="sub-name">Arabic Language</span><span>16</span><span>12</span><span>4</span><span><div class="mini-prog"><div class="mini-prog-fill warn" style="width:75%"></div></div><b>75%</b></span><span class="status-badge status-warn">At Risk</span></div>
+          <div class="att-table-row"><span class="sub-name">CS Fundamentals</span><span>20</span><span>17</span><span>3</span><span><div class="mini-prog"><div class="mini-prog-fill" style="width:85%"></div></div><b>85%</b></span><span class="status-badge status-good">Good</span></div>
+          <div class="att-table-row"><span class="sub-name">English Communication</span><span>14</span><span>13</span><span>1</span><span><div class="mini-prog"><div class="mini-prog-fill" style="width:93%"></div></div><b>93%</b></span><span class="status-badge status-good">Good</span></div>
+          <div class="att-table-row"><span class="sub-name">Islamic Studies</span><span>10</span><span>8</span><span>2</span><span><div class="mini-prog"><div class="mini-prog-fill" style="width:80%"></div></div><b>80%</b></span><span class="status-badge status-good">Good</span></div>
+        </div>
+      </div>
+      <div class="att-calendar-section">
+        <h3 class="section-sub-title">Monthly Calendar — March 2025</h3>
+        <div class="att-calendar" id="att-calendar"></div>
+        <div class="calendar-legend">
+          <span class="cal-legend present">Present</span>
+          <span class="cal-legend absent">Absent</span>
+          <span class="cal-legend holiday">Holiday</span>
+          <span class="cal-legend upcoming">Upcoming</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MARKSHEET ===== -->
+    <div class="page-content" id="page-marksheet">
+      <div class="page-intro"><h2>Academic Marksheet</h2><p>Your official results and GPA breakdown.</p></div>
+      <div class="marks-summary-row">
+        <div class="marks-gpa-card">
+          <svg width="140" height="140" viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="58" fill="none" stroke="#e8edf5" stroke-width="12"/>
+            <circle cx="70" cy="70" r="58" fill="none" stroke="#23314f" stroke-width="12" stroke-dasharray="364.4" stroke-dashoffset="91" stroke-linecap="round" transform="rotate(-90 70 70)"/>
+            <text x="70" y="64" text-anchor="middle" fill="#23314f" font-size="32" font-weight="700" font-family="DM Sans">3.8</text>
+            <text x="70" y="82" text-anchor="middle" fill="#7a8ba8" font-size="13" font-family="DM Sans">Cumulative GPA</text>
+          </svg>
+          <div class="gpa-meta">
+            <div class="gpa-sem">Semester: 1</div>
+            <div class="gpa-year">Year: 2024–25</div>
+            <div class="gpa-standing">Dean's List</div>
+          </div>
+        </div>
+        <div class="marks-quick-stats">
+          <div class="mqs-item"><div class="mqs-val">6</div><div class="mqs-label">Subjects</div></div>
+          <div class="mqs-item"><div class="mqs-val">505</div><div class="mqs-label">Total Marks</div></div>
+          <div class="mqs-item"><div class="mqs-val">84.2</div><div class="mqs-label">Average %</div></div>
+          <div class="mqs-item"><div class="mqs-val">0</div><div class="mqs-label">Failed</div></div>
+        </div>
+      </div>
+      <div class="marks-table-wrap">
+        <div class="marks-table-header-row">
+          <h3>Semester 1 Results</h3>
+          <button class="btn-download" onclick="downloadMarksheet()">
+            <i data-lucide="download" width="14" height="14"></i> Download PDF
+          </button>
+        </div>
+        <div class="marks-table">
+          <div class="marks-thead"><span>Subject</span><span>Midterm (40)</span><span>Final (60)</span><span>Total (100)</span><span>Grade</span><span>Points</span></div>
+          <div class="marks-row"><span class="marks-subj">Mathematics II</span><span>34</span><span>51</span><span class="marks-total">85</span><span class="grade-pill g-A">A</span><span>4.0</span></div>
+          <div class="marks-row"><span class="marks-subj">Physics</span><span>37</span><span>54</span><span class="marks-total">91</span><span class="grade-pill g-Aplus">A+</span><span>4.0</span></div>
+          <div class="marks-row"><span class="marks-subj">CS Fundamentals</span><span>29</span><span>47</span><span class="marks-total">76</span><span class="grade-pill g-B">B+</span><span>3.5</span></div>
+          <div class="marks-row"><span class="marks-subj">English Communication</span><span>35</span><span>53</span><span class="marks-total">88</span><span class="grade-pill g-A">A</span><span>4.0</span></div>
+          <div class="marks-row"><span class="marks-subj">Arabic Language</span><span>32</span><span>44</span><span class="marks-total">76</span><span class="grade-pill g-B">B+</span><span>3.5</span></div>
+          <div class="marks-row"><span class="marks-subj">Islamic Studies</span><span>36</span><span>53</span><span class="marks-total">89</span><span class="grade-pill g-A">A</span><span>4.0</span></div>
+          <div class="marks-row marks-total-row"><span class="marks-subj"><strong>Total / GPA</strong></span><span><strong>203</strong></span><span><strong>302</strong></span><span class="marks-total"><strong>505/600</strong></span><span>—</span><span><strong>3.8</strong></span></div>
+        </div>
+      </div>
+      <div class="prev-sems">
+        <h3 class="section-sub-title">Academic History</h3>
+        <div class="sem-history-row">
+          <div class="sem-hist-card current"><div class="sem-label">Sem 1 · 2024–25</div><div class="sem-gpa">3.8</div><div class="sem-status">Current</div></div>
+          <div class="sem-hist-card"><div class="sem-label">Sem 2 · 2023–24</div><div class="sem-gpa">3.6</div><div class="sem-status">Completed</div></div>
+          <div class="sem-hist-card"><div class="sem-label">Sem 1 · 2023–24</div><div class="sem-gpa">3.4</div><div class="sem-status">Completed</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DOCUMENTS ===== -->
+    <div class="page-content" id="page-documents">
+      <div class="page-intro-row">
+        <div><h2>Document Vault</h2><p>Upload and manage your academic and personal documents.</p></div>
+        <button class="btn-primary-action" onclick="showUploadModal()">
+          <i data-lucide="upload" width="15" height="15"></i> Upload Document
+        </button>
+      </div>
+      <div class="doc-filter-row">
+        <button class="doc-filter active" onclick="filterDocs('all',this)">All Documents</button>
+        <button class="doc-filter" onclick="filterDocs('valid',this)">Valid</button>
+        <button class="doc-filter" onclick="filterDocs('expiring',this)">Expiring Soon</button>
+        <button class="doc-filter" onclick="filterDocs('expired',this)">Expired</button>
+      </div>
+      <div class="docs-grid" id="docs-grid"></div>
+
+      <!-- Upload Modal -->
+      <div class="modal-overlay" id="upload-modal" style="display:none">
+        <div class="modal-box upload-modal-box">
+          <button class="modal-close" onclick="closeUploadModal()"><i data-lucide="x" width="16" height="16"></i></button>
+          <h2 class="modal-title">Upload Document</h2>
+          <div class="upload-form">
+            <div class="form-group"><label>Document Name</label><input type="text" class="form-input" id="doc-name" placeholder="e.g. Health Certificate"/></div>
+            <div class="form-group"><label>Document Type</label>
+              <select class="form-input" id="doc-type">
+                <option>Health Certificate</option><option>Emirates ID</option><option>Passport Copy</option>
+                <option>Academic Certificate</option><option>Bank Statement</option><option>Other</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Expiry Date</label><input type="date" class="form-input" id="doc-expiry"/></div>
+            <div class="upload-drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+              <div class="drop-icon"><i data-lucide="cloud-upload" width="32" height="32"></i></div>
+              <div class="drop-text">Click or drag file here</div>
+              <div class="drop-sub">PDF, JPG, PNG up to 10 MB</div>
+              <input type="file" id="file-input" style="display:none" onchange="handleFileSelect(event)"/>
+            </div>
+            <div id="selected-file" class="selected-file" style="display:none"></div>
+            <button class="btn-login" onclick="uploadDocument()">Upload Document</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ANNOUNCEMENTS ===== -->
+    <div class="page-content" id="page-announcements">
+      <div class="page-intro"><h2>Announcements</h2><p>Official communications from EduLink administration and faculty.</p></div>
+      <div class="ann-filter-row">
+        <button class="ann-filter active" onclick="filterAnn('all',this)">All</button>
+        <button class="ann-filter" onclick="filterAnn('urgent',this)">Urgent</button>
+        <button class="ann-filter" onclick="filterAnn('academic',this)">Academic</button>
+        <button class="ann-filter" onclick="filterAnn('admin',this)">Administrative</button>
+        <button class="ann-filter" onclick="filterAnn('general',this)">General</button>
+      </div>
+      <div class="ann-list" id="ann-list"></div>
+    </div>
+
+    <!-- ===== PROFILE ===== -->
+    <div class="page-content" id="page-profile">
+      <div class="page-intro"><h2>My Profile</h2><p>View and manage your personal information.</p></div>
+      <div class="profile-layout">
+        <div class="profile-card">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" id="profile-avatar">AM</div>
+            <button class="avatar-edit-btn" title="Change photo"><i data-lucide="edit-2" width="12" height="12"></i></button>
+          </div>
+          <div class="profile-name" id="profile-name">Ahmed Al Mansouri</div>
+          <div class="profile-id" id="profile-id-display">STU-2024-00142</div>
+          <div class="profile-program">Bachelor of Computer Science</div>
+          <div class="profile-year">Year 2 · Semester 1</div>
+          <div class="profile-badges">
+            <span class="p-badge">Active Student</span>
+            <span class="p-badge gold">Dean's List</span>
+          </div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-section">
+            <h3>Personal Information</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Full Name</label><input type="text" class="form-input" value="Ahmed Al Mansouri" id="field-name"/></div>
+              <div class="profile-field"><label>Email Address</label><input type="email" class="form-input" value="ahmed.mansouri@edulinkrak.ac.ae"/></div>
+              <div class="profile-field"><label>Phone Number</label><input type="text" class="form-input" value="+971 52 123 4567"/></div>
+              <div class="profile-field"><label>Date of Birth</label><input type="text" class="form-input" value="12 April 2003" readonly/></div>
+              <div class="profile-field"><label>Nationality</label><input type="text" class="form-input" value="UAE" readonly/></div>
+              <div class="profile-field"><label>Emirates ID</label><input type="text" class="form-input" value="784-XXXX-XXXXXXX-X" readonly/></div>
+            </div>
+            <button class="btn-save-profile" onclick="saveProfile()">Save Changes</button>
+          </div>
+          <div class="profile-section">
+            <h3>Emergency Contact</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Contact Name</label><input type="text" class="form-input" value="Khalid Al Mansouri"/></div>
+              <div class="profile-field"><label>Relationship</label><input type="text" class="form-input" value="Father"/></div>
+              <div class="profile-field"><label>Phone</label><input type="text" class="form-input" value="+971 50 987 6543"/></div>
+            </div>
+          </div>
+          <div class="profile-section">
+            <h3>Change Password</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Current Password</label><input type="password" class="form-input" placeholder="Enter current password"/></div>
+              <div class="profile-field"><label>New Password</label><input type="password" class="form-input" placeholder="Enter new password"/></div>
+              <div class="profile-field"><label>Confirm Password</label><input type="password" class="form-input" placeholder="Confirm new password"/></div>
+            </div>
+            <button class="btn-save-profile">Update Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/student.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

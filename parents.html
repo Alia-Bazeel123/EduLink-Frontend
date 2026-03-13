@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduLink – Parent Dashboard</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/parents.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="dashboard-body parents-body">
+
+  <aside class="sidebar parents-sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark-sm">
+        <svg width="36" height="36" viewBox="0 0 40 40">
+          <rect width="40" height="40" rx="10" fill="white" fill-opacity="0.15"/>
+          <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="white"/>
+          <line x1="20" y1="8" x2="20" y2="14" stroke="white" stroke-width="2"/>
+          <line x1="32" y1="20" x2="26" y2="20" stroke="white" stroke-width="2"/>
+          <line x1="20" y1="32" x2="20" y2="26" stroke="white" stroke-width="2"/>
+          <line x1="8" y1="20" x2="14" y2="20" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">EduLink</span>
+        <span class="sidebar-brand-role parents-role">Parent Portal</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a href="#" class="nav-item active" data-page="parents-overview" onclick="parentsNav('parents-overview', this)">
+        <i data-lucide="layout-dashboard" width="18" height="18"></i><span>Dashboard</span>
+      </a>
+
+      <div class="nav-section-label">Children</div>
+      <a href="#" class="nav-item" data-page="parents-children" onclick="parentsNav('parents-children', this)">
+        <i data-lucide="users" width="18" height="18"></i><span>My Children</span>
+        <span class="nav-count">2</span>
+      </a>
+      <a href="#" class="nav-item" data-page="parents-attendance" onclick="parentsNav('parents-attendance', this)">
+        <i data-lucide="calendar-check" width="18" height="18"></i><span>Attendance</span>
+      </a>
+      <a href="#" class="nav-item" data-page="parents-grades" onclick="parentsNav('parents-grades', this)">
+        <i data-lucide="bar-chart-2" width="18" height="18"></i><span>Grades</span>
+        <span class="nav-badge" id="grades-badge">3</span>
+      </a>
+
+      <div class="nav-section-label">Communication</div>
+      <a href="#" class="nav-item" data-page="parents-announcements" onclick="parentsNav('parents-announcements', this)">
+        <i data-lucide="megaphone" width="18" height="18"></i><span>Announcements</span>
+      </a>
+      <a href="#" class="nav-item" data-page="parents-messages" onclick="parentsNav('parents-messages', this)">
+        <i data-lucide="mail" width="18" height="18"></i><span>Messages</span>
+        <span class="nav-badge">2</span>
+      </a>
+
+      <div class="nav-section-label">Documents</div>
+      <a href="#" class="nav-item" data-page="parents-documents" onclick="parentsNav('parents-documents', this)">
+        <i data-lucide="folder-open" width="18" height="18"></i><span>Documents</span>
+        <span class="nav-badge" id="doc-badge-parent">1</span>
+      </a>
+
+      <div class="nav-section-label">Account</div>
+      <a href="#" class="nav-item" data-page="parents-profile" onclick="parentsNav('parents-profile', this)">
+        <i data-lucide="user" width="18" height="18"></i><span>My Profile</span>
+      </a>
+      <a href="#" class="nav-item" data-page="parents-settings" onclick="parentsNav('parents-settings', this)">
+        <i data-lucide="settings" width="18" height="18"></i><span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar parents-av" id="sidebar-avatar">KA</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-name">Khalid Al Mansouri</div>
+          <div class="user-id" id="sidebar-id">parent@demo.com</div>
+        </div>
+      </div>
+      <button class="logout-btn" title="Sign out" onclick="logout()">
+        <i data-lucide="log-out" width="15" height="15"></i>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="page-title">Dashboard</h1>
+        <div class="breadcrumb">Parent Portal / <span id="breadcrumb-span">Dashboard</span></div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbar-date"></div>
+        <button class="notif-btn" onclick="toggleNotifications()" title="Notifications">
+          <i data-lucide="bell" width="18" height="18"></i>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="parents-badge-topbar">Parent</div>
+        <div class="topbar-avatar parents-av">KA</div>
+      </div>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div class="notif-panel" id="notif-panel">
+      <div class="notif-panel-header">Notifications</div>
+      <div class="notif-list">
+        <div class="notif-item unread">
+          <div class="notif-icon-sm"><i data-lucide="calendar-check" width="15" height="15"></i></div>
+          <div class="notif-content">
+            <div class="notif-msg">Ahmed's attendance dropped below 80%</div>
+            <div class="notif-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon-sm warn-ic"><i data-lucide="file-text" width="15" height="15"></i></div>
+          <div class="notif-content">
+            <div class="notif-msg">Health Certificate for Fatima expires in 5 days</div>
+            <div class="notif-time">Yesterday</div>
+          </div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon-sm"><i data-lucide="megaphone" width="15" height="15"></i></div>
+          <div class="notif-content">
+            <div class="notif-msg">Parent-Teacher Meeting scheduled for March 15</div>
+            <div class="notif-time">2 days ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon-sm good-ic"><i data-lucide="check-circle" width="15" height="15"></i></div>
+          <div class="notif-content">
+            <div class="notif-msg">New grades published for Mathematics</div>
+            <div class="notif-time">3 days ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div class="page-content active" id="page-parents-overview">
+      <div class="welcome-banner parents-banner">
+        <div class="welcome-text">
+          <div class="welcome-greeting" id="welcome-greeting">Welcome back,</div>
+          <div class="welcome-name" id="welcome-name">Khalid Al Mansouri</div>
+          <div class="welcome-sub">Parent Dashboard · 2 children enrolled</div>
+        </div>
+        <div class="welcome-icon">
+          <svg width="80" height="80" viewBox="0 0 40 40">
+            <rect width="40" height="40" rx="10" fill="white" fill-opacity="0.2"/>
+            <path d="M8 20 L20 8 L32 20 L20 32 Z" fill="none" stroke="white" stroke-width="2"/>
+            <circle cx="20" cy="20" r="4" fill="white"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="parents-stats-grid">
+        <div class="parents-stat-card card-primary">
+          <div class="psc-icon"><i data-lucide="users" width="24" height="24"></i></div>
+          <div class="psc-val">2</div>
+          <div class="psc-label">Children Enrolled</div>
+          <div class="psc-sub">Ahmed · Fatima</div>
+        </div>
+        <div class="parents-stat-card card-green">
+          <div class="psc-icon"><i data-lucide="calendar-check" width="24" height="24"></i></div>
+          <div class="psc-val">89%</div>
+          <div class="psc-label">Average Attendance</div>
+          <div class="psc-sub">↑ 2% this month</div>
+        </div>
+        <div class="parents-stat-card card-orange">
+          <div class="psc-icon"><i data-lucide="bar-chart-2" width="24" height="24"></i></div>
+          <div class="psc-val">3.6</div>
+          <div class="psc-label">Average GPA</div>
+          <div class="psc-sub">Both children combined</div>
+        </div>
+        <div class="parents-stat-card card-purple">
+          <div class="psc-icon"><i data-lucide="bell" width="24" height="24"></i></div>
+          <div class="psc-val">4</div>
+          <div class="psc-label">Unread Notifications</div>
+          <div class="psc-sub">Action required</div>
+        </div>
+      </div>
+
+      <div class="parents-lower-grid">
+        <!-- Children Overview -->
+        <div class="parents-card">
+          <div class="parents-card-header">
+            <h3>Children Overview</h3>
+            <a href="#" class="card-link" onclick="parentsNav('parents-children', document.querySelector('[data-page=parents-children]'))">View All →</a>
+          </div>
+          <div class="children-overview-list">
+            <div class="child-overview-item">
+              <div class="child-avatar">AM</div>
+              <div class="child-info">
+                <div class="child-name">Ahmed Al Mansouri</div>
+                <div class="child-details">Year 2 · Computer Science</div>
+                <div class="child-stats-row">
+                  <span class="child-stat"><span class="stat-label-sm">Attendance:</span> 87%</span>
+                  <span class="child-stat"><span class="stat-label-sm">GPA:</span> 3.8</span>
+                  <span class="child-stat"><span class="stat-label-sm">Status:</span> <span class="status-badge status-good">Good</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="child-overview-item">
+              <div class="child-avatar">FA</div>
+              <div class="child-info">
+                <div class="child-name">Fatima Al Mansouri</div>
+                <div class="child-details">Year 1 · Business Administration</div>
+                <div class="child-stats-row">
+                  <span class="child-stat"><span class="stat-label-sm">Attendance:</span> 92%</span>
+                  <span class="child-stat"><span class="stat-label-sm">GPA:</span> 3.4</span>
+                  <span class="child-stat"><span class="stat-label-sm">Status:</span> <span class="status-badge status-good">Good</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Grades -->
+        <div class="parents-card">
+          <div class="parents-card-header">
+            <h3>Recent Grades</h3>
+            <a href="#" class="card-link" onclick="parentsNav('parents-grades', document.querySelector('[data-page=parents-grades]'))">View All →</a>
+          </div>
+          <div class="recent-grades-list">
+            <div class="recent-grade-item">
+              <div class="grade-student">Ahmed</div>
+              <div class="grade-subject">Mathematics II</div>
+              <div class="grade-score-display">
+                <span class="grade-value">85/100</span>
+                <span class="grade-badge grade-A">A</span>
+              </div>
+            </div>
+            <div class="recent-grade-item">
+              <div class="grade-student">Ahmed</div>
+              <div class="grade-subject">Physics</div>
+              <div class="grade-score-display">
+                <span class="grade-value">91/100</span>
+                <span class="grade-badge grade-A">A+</span>
+              </div>
+            </div>
+            <div class="recent-grade-item">
+              <div class="grade-student">Fatima</div>
+              <div class="grade-subject">Business Studies</div>
+              <div class="grade-score-display">
+                <span class="grade-value">78/100</span>
+                <span class="grade-badge grade-B">B+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="parents-card">
+          <div class="parents-card-header">
+            <h3>Upcoming Events</h3>
+            <span class="card-tag">This Week</span>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-date">15 Mar</div>
+              <div class="event-details">
+                <div class="event-title">Parent-Teacher Meeting</div>
+                <div class="event-time">4:00 PM – 7:00 PM · Main Hall</div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-date">18 Mar</div>
+              <div class="event-details">
+                <div class="event-title">Science Fair (Ahmed)</div>
+                <div class="event-time">10:00 AM – 2:00 PM · Building B</div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-date">22 Mar</div>
+              <div class="event-details">
+                <div class="event-title">Mid-Term Exams Begin</div>
+                <div class="event-time">All students</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Alerts -->
+        <div class="parents-card">
+          <div class="parents-card-header">
+            <h3>Document Alerts</h3>
+            <span class="card-tag status-warn">Attention Needed</span>
+          </div>
+          <div class="doc-alerts-list">
+            <div class="doc-alert-item expiring">
+              <div class="doc-alert-icon warn-ic"><i data-lucide="alert-triangle" width="16" height="16"></i></div>
+              <div class="doc-alert-info">
+                <div class="doc-alert-name">Fatima's Health Certificate</div>
+                <div class="doc-alert-date">Expires in 5 days</div>
+              </div>
+              <button class="doc-alert-btn" onclick="parentsNav('parents-documents', document.querySelector('[data-page=parents-documents]'))">Review</button>
+            </div>
+            <div class="doc-alert-item valid">
+              <div class="doc-alert-icon good-ic"><i data-lucide="check-circle" width="16" height="16"></i></div>
+              <div class="doc-alert-info">
+                <div class="doc-alert-name">Ahmed's Emirates ID</div>
+                <div class="doc-alert-date">Valid until Dec 2027</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CHILDREN ===== -->
+    <div class="page-content" id="page-parents-children">
+      <div class="page-intro-row">
+        <div><h2>My Children</h2><p>View detailed information about your enrolled children.</p></div>
+        <button class="btn-primary-action" onclick="showToast('Contact school to add new student.')">
+          <i data-lucide="user-plus" width="15" height="15"></i> Link Student
+        </button>
+      </div>
+
+      <div class="children-grid">
+        <div class="child-profile-card">
+          <div class="child-profile-header">
+            <div class="child-profile-avatar">AM</div>
+            <div class="child-profile-info">
+              <div class="child-profile-name">Ahmed Al Mansouri</div>
+              <div class="child-profile-id">STU-2024-00142</div>
+              <div class="child-profile-badges">
+                <span class="p-badge">Year 2</span>
+                <span class="p-badge">Computer Science</span>
+              </div>
+            </div>
+          </div>
+          <div class="child-profile-stats">
+            <div class="child-stat-block">
+              <div class="child-stat-label">Attendance</div>
+              <div class="child-stat-value">87%</div>
+              <div class="mini-prog"><div class="mini-prog-fill" style="width:87%"></div></div>
+            </div>
+            <div class="child-stat-block">
+              <div class="child-stat-label">GPA</div>
+              <div class="child-stat-value">3.8</div>
+              <div class="mini-prog"><div class="mini-prog-fill" style="width:95%"></div></div>
+            </div>
+            <div class="child-stat-block">
+              <div class="child-stat-label">Status</div>
+              <div class="child-stat-value status-good">Active</div>
+            </div>
+          </div>
+          <div class="child-profile-actions">
+            <button class="tbl-btn" onclick="parentsNav('parents-attendance', document.querySelector('[data-page=parents-attendance]'), 'Ahmed')">View Attendance</button>
+            <button class="tbl-btn" onclick="parentsNav('parents-grades', document.querySelector('[data-page=parents-grades]'), 'Ahmed')">View Grades</button>
+          </div>
+        </div>
+
+        <div class="child-profile-card">
+          <div class="child-profile-header">
+            <div class="child-profile-avatar">FA</div>
+            <div class="child-profile-info">
+              <div class="child-profile-name">Fatima Al Mansouri</div>
+              <div class="child-profile-id">STU-2024-00234</div>
+              <div class="child-profile-badges">
+                <span class="p-badge">Year 1</span>
+                <span class="p-badge">Business Admin</span>
+              </div>
+            </div>
+          </div>
+          <div class="child-profile-stats">
+            <div class="child-stat-block">
+              <div class="child-stat-label">Attendance</div>
+              <div class="child-stat-value">92%</div>
+              <div class="mini-prog"><div class="mini-prog-fill" style="width:92%"></div></div>
+            </div>
+            <div class="child-stat-block">
+              <div class="child-stat-label">GPA</div>
+              <div class="child-stat-value">3.4</div>
+              <div class="mini-prog"><div class="mini-prog-fill" style="width:85%"></div></div>
+            </div>
+            <div class="child-stat-block">
+              <div class="child-stat-label">Status</div>
+              <div class="child-stat-value status-good">Active</div>
+            </div>
+          </div>
+          <div class="child-profile-actions">
+            <button class="tbl-btn" onclick="parentsNav('parents-attendance', document.querySelector('[data-page=parents-attendance]'), 'Fatima')">View Attendance</button>
+            <button class="tbl-btn" onclick="parentsNav('parents-grades', document.querySelector('[data-page=parents-grades]'), 'Fatima')">View Grades</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ATTENDANCE ===== -->
+    <div class="page-content" id="page-parents-attendance">
+      <div class="page-intro-row">
+        <div><h2>Attendance Overview</h2><p>Monitor attendance for your children.</p></div>
+        <div class="child-selector">
+          <select class="form-input select-sm" id="attendance-child-select" onchange="renderAttendanceView()">
+            <option value="ahmed">Ahmed Al Mansouri</option>
+            <option value="fatima">Fatima Al Mansouri</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="att-summary-row">
+        <div class="att-summary-card"><div class="att-summary-val" id="att-overall">87%</div><div class="att-summary-label">Overall Rate</div><div class="att-status-bar"><div class="att-status-fill" id="att-overall-bar" style="width:87%"></div></div></div>
+        <div class="att-summary-card"><div class="att-summary-val" id="att-attended">42</div><div class="att-summary-label">Classes Attended</div></div>
+        <div class="att-summary-card warn-card"><div class="att-summary-val" id="att-missed">6</div><div class="att-summary-label">Classes Missed</div></div>
+        <div class="att-summary-card"><div class="att-summary-val">75%</div><div class="att-summary-label">Min. Required</div></div>
+      </div>
+
+      <div class="parents-card">
+        <div class="parents-card-header">
+          <h3>Subject-wise Attendance</h3>
+          <span class="card-tag">Current Semester</span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="attendance-table">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Total Classes</th>
+                <th>Attended</th>
+                <th>Missed</th>
+                <th>Percentage</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="att-calendar-section">
+        <h3 class="section-sub-title">Monthly Calendar — March 2025</h3>
+        <div class="att-calendar" id="parents-att-calendar"></div>
+        <div class="calendar-legend">
+          <span class="cal-legend present">Present</span>
+          <span class="cal-legend absent">Absent</span>
+          <span class="cal-legend holiday">Holiday</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== GRADES ===== -->
+    <div class="page-content" id="page-parents-grades">
+      <div class="page-intro-row">
+        <div><h2>Grades & Academic Progress</h2><p>View your children's grades and academic performance.</p></div>
+        <div class="child-selector">
+          <select class="form-input select-sm" id="grades-child-select" onchange="renderGradesView()">
+            <option value="ahmed">Ahmed Al Mansouri</option>
+            <option value="fatima">Fatima Al Mansouri</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="marks-summary-row">
+        <div class="marks-gpa-card">
+          <svg width="140" height="140" viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="58" fill="none" stroke="#e8edf5" stroke-width="12"/>
+            <circle cx="70" cy="70" r="58" fill="none" stroke="#23314f" stroke-width="12" stroke-dasharray="364.4" stroke-dashoffset="91" stroke-linecap="round" transform="rotate(-90 70 70)"/>
+            <text x="70" y="64" text-anchor="middle" fill="#23314f" font-size="32" font-weight="700" font-family="DM Sans" id="gpa-circle-value">3.8</text>
+            <text x="70" y="82" text-anchor="middle" fill="#7a8ba8" font-size="13" font-family="DM Sans">Current GPA</text>
+          </svg>
+          <div class="gpa-meta">
+            <div class="gpa-sem" id="gpa-student-name">Ahmed Al Mansouri</div>
+            <div class="gpa-year">Year 2 · Semester 1</div>
+            <div class="gpa-standing" id="gpa-standing">Dean's List</div>
+          </div>
+        </div>
+        <div class="marks-quick-stats">
+          <div class="mqs-item"><div class="mqs-val" id="stats-subjects">6</div><div class="mqs-label">Subjects</div></div>
+          <div class="mqs-item"><div class="mqs-val" id="stats-total">505</div><div class="mqs-label">Total Marks</div></div>
+          <div class="mqs-item"><div class="mqs-val" id="stats-average">84.2</div><div class="mqs-label">Average %</div></div>
+          <div class="mqs-item"><div class="mqs-val" id="stats-rank">12</div><div class="mqs-label">Class Rank</div></div>
+        </div>
+      </div>
+
+      <div class="parents-card">
+        <div class="parents-card-header">
+          <h3>Semester 1 Results</h3>
+          <button class="btn-download" onclick="downloadReport()">
+            <i data-lucide="download" width="14" height="14"></i> Download Report
+          </button>
+        </div>
+        <div class="marks-table-wrap">
+          <div class="marks-table" id="grades-table-container"></div>
+        </div>
+      </div>
+
+      <div class="sem-history-row">
+        <div class="sem-hist-card current"><div class="sem-label">Sem 1 · 2024–25</div><div class="sem-gpa" id="sem1-gpa">3.8</div><div class="sem-status">Current</div></div>
+        <div class="sem-hist-card"><div class="sem-label">Sem 2 · 2023–24</div><div class="sem-gpa" id="sem2-gpa">3.6</div><div class="sem-status">Completed</div></div>
+        <div class="sem-hist-card"><div class="sem-label">Sem 1 · 2023–24</div><div class="sem-gpa" id="sem3-gpa">3.4</div><div class="sem-status">Completed</div></div>
+      </div>
+    </div>
+
+    <!-- ===== ANNOUNCEMENTS ===== -->
+    <div class="page-content" id="page-parents-announcements">
+      <div class="page-intro"><h2>Announcements</h2><p>Official communications from the university.</p></div>
+      <div class="ann-filter-row">
+        <button class="ann-filter active" onclick="filterParentAnn('all',this)">All</button>
+        <button class="ann-filter" onclick="filterParentAnn('urgent',this)">Urgent</button>
+        <button class="ann-filter" onclick="filterParentAnn('academic',this)">Academic</button>
+        <button class="ann-filter" onclick="filterParentAnn('parent',this)">Parent</button>
+        <button class="ann-filter" onclick="filterParentAnn('general',this)">General</button>
+      </div>
+      <div class="ann-list" id="parent-ann-list"></div>
+    </div>
+
+    <!-- ===== MESSAGES ===== -->
+    <div class="page-content" id="page-parents-messages">
+      <div class="page-intro-row">
+        <div><h2>Messages</h2><p>Communicate with teachers and administration.</p></div>
+        <button class="btn-primary-action" onclick="showComposeModal()">
+          <i data-lucide="edit-3" width="15" height="15"></i> Compose
+        </button>
+      </div>
+
+      <div class="messages-container">
+        <div class="messages-sidebar">
+          <div class="messages-search">
+            <i data-lucide="search" width="16" height="16"></i>
+            <input type="text" placeholder="Search messages..." class="form-input search-input"/>
+          </div>
+          <div class="messages-conversations" id="messages-conversations"></div>
+        </div>
+        <div class="messages-content" id="messages-content">
+          <div class="no-conversation-selected">
+            <i data-lucide="mail" width="48" height="48"></i>
+            <p>Select a conversation to view messages</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compose Modal -->
+      <div class="modal-overlay" id="compose-modal" style="display:none">
+        <div class="modal-box compose-modal-box">
+          <button class="modal-close" onclick="closeComposeModal()"><i data-lucide="x" width="16" height="16"></i></button>
+          <h2 class="modal-title">Compose Message</h2>
+          <div class="modal-form">
+            <div class="form-group"><label>To</label>
+              <select class="form-input" id="message-to">
+                <option>Dr. Rania Hassan (Mathematics)</option>
+                <option>Prof. Ahmed Khalid (Physics)</option>
+                <option>Academic Office</option>
+                <option>Admin Office</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Subject</label><input type="text" class="form-input" id="message-subject" placeholder="Message subject"/></div>
+            <div class="form-group"><label>Message</label><textarea class="form-input form-textarea" id="message-body" placeholder="Write your message..."></textarea></div>
+            <button class="btn-login" onclick="sendMessage()">Send Message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DOCUMENTS ===== -->
+    <div class="page-content" id="page-parents-documents">
+      <div class="page-intro-row">
+        <div><h2>Documents</h2><p>View your children's academic documents.</p></div>
+        <div class="child-selector">
+          <select class="form-input select-sm" id="docs-child-select" onchange="renderParentDocs()">
+            <option value="all">All Children</option>
+            <option value="ahmed">Ahmed Al Mansouri</option>
+            <option value="fatima">Fatima Al Mansouri</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="doc-filter-row">
+        <button class="doc-filter active" onclick="filterParentDocs('all',this)">All Documents</button>
+        <button class="doc-filter" onclick="filterParentDocs('valid',this)">Valid</button>
+        <button class="doc-filter" onclick="filterParentDocs('expiring',this)">Expiring Soon</button>
+        <button class="doc-filter" onclick="filterParentDocs('expired',this)">Expired</button>
+      </div>
+
+      <div class="docs-grid" id="parent-docs-grid"></div>
+    </div>
+
+    <!-- ===== PROFILE ===== -->
+    <div class="page-content" id="page-parents-profile">
+      <div class="page-intro"><h2>My Profile</h2><p>Manage your parent account information.</p></div>
+      <div class="profile-layout">
+        <div class="profile-card">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar parents-av" id="profile-avatar">KA</div>
+            <button class="avatar-edit-btn" title="Change photo"><i data-lucide="edit-2" width="12" height="12"></i></button>
+          </div>
+          <div class="profile-name" id="profile-name-display">Khalid Al Mansouri</div>
+          <div class="profile-id">PAR-2023-00123</div>
+          <div class="profile-program">Parent of: Ahmed, Fatima</div>
+          <div class="profile-year">Linked since: 2023</div>
+          <div class="profile-badges">
+            <span class="p-badge">Verified Parent</span>
+            <span class="p-badge gold">2 Children</span>
+          </div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-section">
+            <h3>Personal Information</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Full Name</label><input type="text" class="form-input" value="Khalid Al Mansouri" id="parent-field-name"/></div>
+              <div class="profile-field"><label>Email Address</label><input type="email" class="form-input" value="khalid.mansouri@email.com"/></div>
+              <div class="profile-field"><label>Phone Number</label><input type="text" class="form-input" value="+971 50 123 4567"/></div>
+              <div class="profile-field"><label>Alternative Phone</label><input type="text" class="form-input" value="+971 55 987 6543"/></div>
+              <div class="profile-field"><label>Nationality</label><input type="text" class="form-input" value="UAE" readonly/></div>
+              <div class="profile-field"><label>Emirates ID</label><input type="text" class="form-input" value="784-XXXX-XXXXXXX-X" readonly/></div>
+            </div>
+            <button class="btn-save-profile" onclick="saveParentProfile()">Save Changes</button>
+          </div>
+          <div class="profile-section">
+            <h3>Emergency Contact</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Contact Name</label><input type="text" class="form-input" value="Aisha Al Mansouri"/></div>
+              <div class="profile-field"><label>Relationship</label><input type="text" class="form-input" value="Spouse"/></div>
+              <div class="profile-field"><label>Phone</label><input type="text" class="form-input" value="+971 52 456 7890"/></div>
+            </div>
+          </div>
+          <div class="profile-section">
+            <h3>Change Password</h3>
+            <div class="profile-fields">
+              <div class="profile-field"><label>Current Password</label><input type="password" class="form-input" placeholder="Enter current password"/></div>
+              <div class="profile-field"><label>New Password</label><input type="password" class="form-input" placeholder="Enter new password"/></div>
+              <div class="profile-field"><label>Confirm Password</label><input type="password" class="form-input" placeholder="Confirm new password"/></div>
+            </div>
+            <button class="btn-save-profile">Update Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS ===== -->
+    <div class="page-content" id="page-parents-settings">
+      <div class="page-intro"><h2>Settings</h2><p>Manage your notification preferences and account settings.</p></div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <h3>Notifications</h3>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="pn1"><label for="pn1" class="toggle-label"></label><span>Email notifications</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="pn2"><label for="pn2" class="toggle-label"></label><span>SMS alerts</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="pn3"><label for="pn3" class="toggle-label"></label><span>Attendance alerts</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="pn4"><label for="pn4" class="toggle-label"></label><span>Grade updates</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="pn5"><label for="pn5" class="toggle-label"></label><span>Document expiry alerts</span></div></div>
+          <button class="btn-save-profile" onclick="showToast('Preferences saved.')">Save Preferences</button>
+        </div>
+        <div class="settings-card">
+          <h3>Children Management</h3>
+          <div class="form-group"><label>Linked Students</label>
+            <div class="linked-student-item"><span>Ahmed Al Mansouri (STU-2024-00142)</span><button class="tbl-btn red" onclick="showToast('Contact school to unlink')">Unlink</button></div>
+            <div class="linked-student-item"><span>Fatima Al Mansouri (STU-2024-00234)</span><button class="tbl-btn red" onclick="showToast('Contact school to unlink')">Unlink</button></div>
+          </div>
+          <div class="form-group"><label>Link New Student</label><input type="text" class="form-input" placeholder="Student ID or Access Code"/></div>
+          <button class="btn-save-profile" onclick="showToast('Link request sent.')">Request Access</button>
+        </div>
+        <div class="settings-card">
+          <h3>Communication Preferences</h3>
+          <div class="form-group"><label>Language</label>
+            <select class="form-input"><option>English</option><option>Arabic</option></select>
+          </div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" checked id="pc1"><label for="pc1" class="toggle-label"></label><span>Receive weekly summaries</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="pc2"><label for="pc2" class="toggle-label"></label><span>Include grade reports in summary</span></div></div>
+          <button class="btn-save-profile" onclick="showToast('Preferences saved.')">Save Settings</button>
+        </div>
+        <div class="settings-card">
+          <h3>Display</h3>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="pd1"><label for="pd1" class="toggle-label"></label><span>Compact view</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="pd2"><label for="pd2" class="toggle-label"></label><span>High contrast mode</span></div></div>
+          <div class="form-group"><div class="toggle-wrap"><input type="checkbox" class="toggle" id="pd3"><label for="pd3" class="toggle-label"></label><span>Show child avatars</span></div></div>
+          <button class="btn-save-profile" onclick="showToast('Display preferences saved.')">Save Preferences</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/parents.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
